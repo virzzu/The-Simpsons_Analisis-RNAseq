@@ -1,0 +1,25 @@
+.	Basic Statistics	Per Base Sequence Quality	Per Sequence Quality Scores	Per Base Sequence Content	Per Sequence GC Content	Per Base N Content	Sequence Length Distribution	Sequence Duplication Levels	Overrepresented Sequences	Adapter Content
+BartSimpson_R1	1	1	1	1	0.5	1	1	1	0.5	1
+BartSimpson_R1_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+BartSimpson_R2	1	1	1	1	0.5	1	1	1	0.5	1
+BartSimpson_R2_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+LisaSimpson_R1	1	1	1	1	0.25	1	1	1	0.5	1
+LisaSimpson_R1_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
+LisaSimpson_R2	1	1	1	1	0.5	1	1	1	0.5	1
+LisaSimpson_R2_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+MaggieSimpson_R1	1	1	1	1	0.5	1	1	1	0.5	1
+MaggieSimpson_R1_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+MaggieSimpson_R2	1	1	1	1	0.25	1	1	1	0.5	1
+MaggieSimpson_R2_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
+MargeSimpson_R1	1	1	1	1	0.25	1	1	1	0.5	1
+MargeSimpson_R1_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
+MargeSimpson_R2	1	1	1	1	0.5	1	1	1	0.5	1
+MargeSimpson_R2_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+PattyBouvier_R1	1	1	1	1	0.5	1	1	1	0.5	1
+PattyBouvier_R1_filtered	1	1	1	1	0.5	1	0.5	1	0.5	1
+PattyBouvier_R2	1	1	1	1	0.25	1	1	1	0.5	1
+PattyBouvier_R2_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
+SelmaBouvier_R1	1	1	1	1	0.25	1	1	1	0.5	1
+SelmaBouvier_R1_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
+SelmaBouvier_R2	1	1	1	1	0.25	1	1	1	0.5	1
+SelmaBouvier_R2_filtered	1	1	1	1	0.25	1	0.5	1	0.5	1
