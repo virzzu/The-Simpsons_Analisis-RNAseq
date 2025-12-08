@@ -1,6 +1,4 @@
----
-layout: page
----
+
 ### Objetivos de aprendizaje
  * Realizar un análisis de calidad y alineamiento de lecturas RNA-seq.
  * Cuantificar niveles de expresión génica y normalizar los datos.
