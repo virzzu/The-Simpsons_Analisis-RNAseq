@@ -1,4 +1,4 @@
-# The Simpson Analisis-RNAseq
+# The Simpsons Analisis-RNAseq
 ## Análisis de Expresión Diferencial de Genes Relacionados con la Obesidad (RNA-seq) en personajes de Los Simpson
 
 **Asignatura:** Secuenciación y Ómicas de próxima generación
