@@ -3,4 +3,4 @@ title: "Workflow"
 ---
 # RNA-Seq data analysis workflow
 Este es el flujo de trabajo del proyecto:
-![workflow][img/workflow.png]
+![workflow](img/workflow.png)
