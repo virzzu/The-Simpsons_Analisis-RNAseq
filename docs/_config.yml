@@ -1,4 +1,4 @@
 title: "The Simpsons Analisis RNAseq"
-theme: minima
+theme: jekyll-theme-slate
 plugins:
   - jekyll-feed
