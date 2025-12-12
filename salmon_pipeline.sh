@@ -3,6 +3,7 @@
 # ------------------------ Pipeline de pseudoalineamiento y cuantificacion con Salmon ----------------------------
 # ----------------------------------------------------------------------------------------------------------------
 
+# Estando en el entorno activado de trabajo:
 # Lo primero que hay que hacer es instalar el paquete en el entorno ya que no lo tenemos. Podemos ver
 # los paquetes que tenemos instalados en el entorno y sus versiones con `conda list`.
 
@@ -48,7 +49,7 @@ done
 	# --validateMappings es una version mejorada del algoritmo interno
 	# -o donde y como queremos que salga el output
 
-# Salmon devolvera mensajes que tenemos que leer e interpretar, podemos buscar en la terminal con ctrl+f:
+# Salmon quant devolvera mensajes que tenemos que leer e interpretar, podemos buscar en la terminal con ctrl+f:
 	# [info] mapping rate = % -> aqui deberiamos estar viendo porcentajes del orden de >70-80%. 
 	# 	(en el trabajo no sale, puede que sea porque son datos artificiales)
 	# [info] counted n total reads -> sirve para saber si tenemos datos suficientes para hacer la estadistica (la quantf en si)

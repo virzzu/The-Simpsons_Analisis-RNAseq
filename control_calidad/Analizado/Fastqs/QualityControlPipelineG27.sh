@@ -5,7 +5,7 @@ SECONDS=0
 # Notas: tener instalada una distribucion de conda para poder ejecutar herramientas para el analisis
 # Buenas practicas: ejecutar la ayuda de los programas para ver las opciones y sintaxis con programa -h o programa --help
 # cambiamos el directorio a donde necesitemos y tengamos nuestros archivos
-# cd /Users/virginia/Desktop/Master/SOPG/The-Simpson_Analisis-RNAseq
+# cd /Users/virginia/Desktop/Master/SOPG/The-Simpsons_Analisis-RNAseq
 
 # # 1. Creamos un entorno en conda con sus programas para utilizarlos de manera segura y aislada de otros entornos
 # conda init
