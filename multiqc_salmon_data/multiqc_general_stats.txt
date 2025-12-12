@@ -1,0 +1,7 @@
+Sample	salmon-percent_mapped	salmon-num_mapped	salmon-library_types	salmon-compatible_fragment_ratio	salmon-strand_mapping_bias
+BartSimpson_quant	32.07831325301205	0.000426	IU	100.0	0.0
+LisaSimpson_quant	31.742424242424246	0.000419	IU	100.0	0.0
+MaggieSimpson_quant	31.92771084337349	0.000424	IU	100.0	0.0
+MargeSimpson_quant	25.75301204819277	0.00034199999999999996	IU	100.0	0.0
+PattyBouvier_quant	26.36363636363636	0.000348	IU	100.0	0.0
+SelmaBouvier_quant	26.054216867469883	0.000346	IU	100.0	0.0

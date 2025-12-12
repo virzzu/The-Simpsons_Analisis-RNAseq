@@ -1,0 +1,38 @@
+[2025-12-12 14:16:02.169] [jointLog] [info] Fragment incompatibility prior below threshold.  Incompatible fragments will be ignored.
+[2025-12-12 14:16:02.169] [jointLog] [info] Usage of --validateMappings implies use of minScoreFraction. Since not explicitly specified, it is being set to 0.65
+[2025-12-12 14:16:02.169] [jointLog] [info] Usage of --validateMappings, without --hardFilter implies use of range factorization. rangeFactorizationBins is being set to 4
+[2025-12-12 14:16:02.169] [jointLog] [info] Usage of --validateMappings implies a default consensus slack of 0.2. Setting consensusSlack to 0.2.
+[2025-12-12 14:16:02.169] [jointLog] [info] parsing read library format
+[2025-12-12 14:16:02.169] [jointLog] [info] There is 1 library.
+[2025-12-12 14:16:02.271] [jointLog] [info] Loading Quasi index
+[2025-12-12 14:16:02.272] [jointLog] [info] Loading 32-bit quasi index
+[2025-12-12 14:16:02.347] [jointLog] [info] done
+[2025-12-12 14:16:02.347] [jointLog] [info] Index contained 679 targets
+[2025-12-12 14:16:02.489] [jointLog] [info] Computed 76 rich equivalence classes for further processing
+[2025-12-12 14:16:02.490] [jointLog] [info] Counted 426 total reads in the equivalence classes 
+[2025-12-12 14:16:02.492] [jointLog] [info] Number of mappings discarded because of alignment score : 0
+[2025-12-12 14:16:02.492] [jointLog] [info] Number of fragments entirely discarded because of alignment score : 0
+[2025-12-12 14:16:02.492] [jointLog] [info] Number of fragments discarded because they are best-mapped to decoys : 0
+[2025-12-12 14:16:02.492] [jointLog] [info] Number of fragments discarded because they have only dovetail (discordant) mappings : 14
+[2025-12-12 14:16:02.493] [jointLog] [warning] Only 426 fragments were mapped, but the number of burn-in fragments was set to 5000000.
+The effective lengths have been computed using the observed mappings.
+
+[2025-12-12 14:16:02.493] [jointLog] [info] Mapping rate = 32.0783%
+
+[2025-12-12 14:16:02.493] [jointLog] [info] finished quantifyLibrary()
+[2025-12-12 14:16:02.493] [jointLog] [info] Starting optimizer
+[2025-12-12 14:16:02.490] [fileLog] [info] 
+At end of round 0
+==================
+Observed 1328 total fragments (1328 in most recent round)
+
+[2025-12-12 14:16:03.209] [jointLog] [info] Marked 0 weighted equivalence classes as degenerate
+[2025-12-12 14:16:03.209] [jointLog] [info] iteration = 0 | max rel diff. = 27.1307
+[2025-12-12 14:16:03.219] [jointLog] [info] iteration = 100 | max rel diff. = 0.00515064
+[2025-12-12 14:16:03.219] [jointLog] [info] Finished optimizer
+[2025-12-12 14:16:03.219] [jointLog] [info] writing output 
+
+[2025-12-12 14:16:03.222] [jointLog] [warning] NOTE: Read Lib [[ Fastqs/Trimmed/BartSimpson_R1_filtered.fastq.gz, Fastqs/Trimmed/BartSimpson_R2_filtered.fastq.gz]] :
+
+Detected a *potential* strand bias > 1% in an unstranded protocol check the file: quantf_results/BartSimpson_quant/lib_format_counts.json for details
+

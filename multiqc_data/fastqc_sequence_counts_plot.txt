@@ -1,0 +1,25 @@
+Sample	Unique Reads	Duplicate Reads
+BartSimpson_R1	1321.0	7.0
+BartSimpson_R1_filtered	1321.0	7.0
+BartSimpson_R2	1321.0	7.0
+BartSimpson_R2_filtered	1321.0	7.0
+LisaSimpson_R1	1316.0	4.0
+LisaSimpson_R1_filtered	1316.0	4.0
+LisaSimpson_R2	1316.0	4.0
+LisaSimpson_R2_filtered	1316.0	4.0
+MaggieSimpson_R1	1325.0	3.0
+MaggieSimpson_R1_filtered	1325.0	3.0
+MaggieSimpson_R2	1323.0	5.0
+MaggieSimpson_R2_filtered	1323.0	5.0
+MargeSimpson_R1	1322.0	6.0
+MargeSimpson_R1_filtered	1322.0	6.0
+MargeSimpson_R2	1342.0	10.0
+MargeSimpson_R2_filtered	1318.0	10.0
+PattyBouvier_R1	1313.0	7.0
+PattyBouvier_R1_filtered	1313.0	7.0
+PattyBouvier_R2	1337.0	7.0
+PattyBouvier_R2_filtered	1315.0	5.0
+SelmaBouvier_R1	1325.0	3.0
+SelmaBouvier_R1_filtered	1325.0	3.0
+SelmaBouvier_R2	1345.0	7.0
+SelmaBouvier_R2_filtered	1321.0	7.0

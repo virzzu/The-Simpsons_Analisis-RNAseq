@@ -1,0 +1,7 @@
+Sample	Passed Filter	Low Quality	Too Many N	Low Complexity	Too Short	Too Long
+BartSimpson	2656.0	0.0	0.0	nan	0.0	0.0
+LisaSimpson	2640.0	0.0	0.0	nan	0.0	0.0
+MaggieSimpson	2656.0	0.0	0.0	nan	0.0	0.0
+MargeSimpson	2656.0	0.0	0.0	nan	0.0	0.0
+PattyBouvier	2640.0	0.0	0.0	nan	0.0	0.0
+SelmaBouvier	2656.0	0.0	0.0	nan	0.0	0.0

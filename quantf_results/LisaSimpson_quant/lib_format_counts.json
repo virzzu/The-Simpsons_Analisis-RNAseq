@@ -1,0 +1,25 @@
+{
+    "read_files": [
+        "Fastqs/Trimmed/LisaSimpson_R1_filtered.fastq.gz",
+        "Fastqs/Trimmed/LisaSimpson_R2_filtered.fastq.gz"
+    ],
+    "expected_format": "IU",
+    "compatible_fragment_ratio": 1.0,
+    "num_compatible_fragments": 419,
+    "num_assigned_fragments": 419,
+    "num_frags_with_concordant_consistent_mappings": 417,
+    "num_frags_with_inconsistent_or_orphan_mappings": 2,
+    "strand_mapping_bias": 0.0,
+    "MSF": 0,
+    "OSF": 0,
+    "ISF": 417,
+    "MSR": 0,
+    "OSR": 0,
+    "ISR": 0,
+    "SF": 2,
+    "SR": 0,
+    "MU": 0,
+    "OU": 0,
+    "IU": 0,
+    "U": 0
+}

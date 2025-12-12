@@ -41,9 +41,12 @@ cd ./Fastqs
 # creamos las carpetas que vamos a necesitar
 mkdir -p Quality/Raw Quality/Filtered Trimmed
 
-# En qualityraw haremos los controles de calidad de cada uno de los crudos con fastqc
-# y luego cada uno lo meteremos en los trimmed con lo que devuelva fastp,
-# finalmente meteremos en qualityfiltered lo que devuelva fastqc sobre los archivos de trimmed
+############ Workflow quality control ##########
+# En quality/raw haremos los controles de calidad de cada uno de los crudos con fastqc
+# y luego cada uno lo meteremos en los trimmed/ con lo que devuelva fastp (procesado y filtrado),
+# finalmente meteremos en quality/filtered lo que devuelva fastqc sobre los archivos de trimmed/
+# Es decir, las secuencias que tienen la calidad que queremos, y que usaremos para los siguientes pasos (alineamiento, cuantif)
+# son las secuencias que devuelve fastp en trimmed/
 
 ###########################################################################################
 ###########################################################################################

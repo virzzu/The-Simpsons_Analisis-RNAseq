@@ -1,0 +1,7 @@
+Module	Section	Sample Name	Source
+Salmon	all_sections	BartSimpson_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/BartSimpson_quant/libParams/flenDist.txt
+Salmon	all_sections	PattyBouvier_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/PattyBouvier_quant/libParams/flenDist.txt
+Salmon	all_sections	LisaSimpson_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/LisaSimpson_quant/libParams/flenDist.txt
+Salmon	all_sections	SelmaBouvier_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/SelmaBouvier_quant/libParams/flenDist.txt
+Salmon	all_sections	MaggieSimpson_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/MaggieSimpson_quant/libParams/flenDist.txt
+Salmon	all_sections	MargeSimpson_quant	/Users/virginia/Desktop/Master/SOPG/Actividad2/simpson/The-Simpson_Analisis-RNAseq/quantf_results/MargeSimpson_quant/libParams/flenDist.txt

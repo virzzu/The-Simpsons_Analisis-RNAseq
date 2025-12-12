@@ -1,0 +1,14 @@
+[2025-12-12 11:42:17.584] [jointLog] [info] [Step 1 of 4] : counting k-mers
+[2025-12-12 11:42:17.837] [jointLog] [warning] Removed 27 transcripts that were sequence duplicates of indexed transcripts.
+[2025-12-12 11:42:17.837] [jointLog] [warning] If you wish to retain duplicate transcripts, please use the `--keepDuplicates` flag
+[2025-12-12 11:42:17.837] [jointLog] [info] Replaced 0 non-ATCG nucleotides
+[2025-12-12 11:42:17.837] [jointLog] [info] Clipped poly-A tails from 4 transcripts
+[2025-12-12 11:42:17.838] [jointLog] [info] Building rank-select dictionary and saving to disk
+[2025-12-12 11:42:17.843] [jointLog] [info] done
+[2025-12-12 11:42:17.843] [jointLog] [info] Writing sequence data to file . . . 
+[2025-12-12 11:42:17.904] [jointLog] [info] done
+[2025-12-12 11:42:17.909] [jointLog] [info] Building 32-bit suffix array (length of generalized text is 4,964,814)
+[2025-12-12 11:42:17.920] [jointLog] [info] Building suffix array . . . 
+[2025-12-12 11:42:20.036] [jointLog] [info] khash had 411,121 keys
+[2025-12-12 11:42:20.036] [jointLog] [info] saving hash to disk . . . 
+[2025-12-12 11:42:20.143] [jointLog] [info] done

@@ -1,0 +1,10 @@
+{
+    "salmon_version": "0.14.1",
+    "index": "salmon_index",
+    "libType": "A",
+    "mates1": "Fastqs/Trimmed/PattyBouvier_R1_filtered.fastq.gz",
+    "mates2": "Fastqs/Trimmed/PattyBouvier_R2_filtered.fastq.gz",
+    "validateMappings": [],
+    "output": "quantf_results/PattyBouvier_quant",
+    "auxDir": "aux_info"
+}
