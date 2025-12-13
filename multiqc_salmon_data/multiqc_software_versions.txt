@@ -1,2 +1,2 @@
 Sample	Salmon
-Salmon	0.14.1
+Salmon	1.10.3

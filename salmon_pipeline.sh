@@ -2,12 +2,13 @@
 
 # ------------------------ Pipeline de pseudoalineamiento y cuantificacion con Salmon ----------------------------
 # ----------------------------------------------------------------------------------------------------------------
+ # 										!!!!!!  ATENCION  !!!!!!
+# Lo primero que hay que hacer es * crear un nuevo entorno * porque con el entorno del Tema 4 hay incompatibilidades y el resultado
+# sale mal.
 
-# Estando en el entorno activado de trabajo:
-# Lo primero que hay que hacer es instalar el paquete en el entorno ya que no lo tenemos. Podemos ver
-# los paquetes que tenemos instalados en el entorno y sus versiones con `conda list`.
-
-conda install -c bioconda salmon
+# conda create --name salmon_env 
+# conda activate salmon_env
+# conda install -c bioconda salmon
 
 # Utilizamos Salmon porque lleva a cabo un pseudoalineamiento, realmente no nos importa tanto la posicion exacta base por base, sino 
 # solo saber si la lectura es compatible con alguno de los transcritos de referencia que le pasemos
@@ -30,7 +31,7 @@ salmon index -t Referencia.fasta -i salmon_index
 
 
 # 2- Cuantificar los fastq frente al index que ha creado salmon
-mkdir quantf_results 
+mkdir quant_results
 # creamos una carpeta donde guardar la cuantificacion
 
 # con un bucle, quantificamos todas las muestras
@@ -38,11 +39,11 @@ for i in $(cat Fastqs/muestras.txt);
 do 
 	echo "Quantifying sample: ${i}"
 	salmon quant -i salmon_index -l A \
-		-1 Fastqs/Trimmed/${i}_R1_filtered.fastq.gz \
-		-2 Fastqs/Trimmed/${i}_R2_filtered.fastq.gz \
+		-1 Fastqs/${i}_R1.fastq.gz \
+		-2 Fastqs/${i}_R2.fastq.gz \
 		--validateMappings \
-		-o quantf_results/${i}_quant
-	echo "Quantifying done" \
+		-o quant_results/${i}_quant
+	echo "Quantifying done"
 done
 	# -1 pide la primera lectura del paired-end
 	# -2 pide la segunda lectura del paired-end
@@ -58,5 +59,4 @@ done
 # Asi mismo, los archivos importantes que nos vamos a llevar a R para analizar su diff expresion van a ser los quant.sf
 
 # finalmente podemos lanzar un multiqc con los archivos .sf para que lo explique todo un poco en html
-
-multiqc quantf_results/ -n Reporte_Salmon_Final.html
+# pero para ello tenemos que cambiar de entorno porque ya no tenemos instalado multiqc aqui :(
