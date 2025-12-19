@@ -39,6 +39,6 @@ A continuación se detalla la organización de los archivos:
 └── 📄 README.md               # Este archivo
 ```
 
-Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages: [https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/][https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/]
+Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages: [https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/]
 
 Autores: Rita Pellissa Valera, Samuel Pintos González, Tamara Noya Mosquera, Teresa Carrión Mera, Vanesa de las Heras Hermosilla, Virginia García-Loygorri Arias y Yannis Avlonitis Egea.
