@@ -478,9 +478,14 @@ de expresión diferencial con herramientas en R</a>
 <ul>
 <li><a href="#análisis-de-expresión-diferencial-génica-con-edger" id="toc-análisis-de-expresión-diferencial-génica-con-edger">Análisis de
 expresión diferencial génica con edgeR</a></li>
+<li><a href="#visualización-de-los-resultados" id="toc-visualización-de-los-resultados">Visualización de los
+resultados</a></li>
 <li><a href="#interpretación-de-los-resultados" id="toc-interpretación-de-los-resultados">Interpretación de los
 resultados</a></li>
 </ul></li>
+<li><a href="#análisis-de-enriquecimiento-funcional-de-los-genes-diferencialmente-expresados" id="toc-análisis-de-enriquecimiento-funcional-de-los-genes-diferencialmente-expresados">Análisis
+de enriquecimiento funcional de los genes diferencialmente
+expresados</a></li>
 </ul></li>
 </ul>
 </div>
@@ -822,8 +827,9 @@ descubrimientos (un p valor ajustado) de <span class="math inline">\(FDR
 &lt; 0.05\)</span> y un cambio en la expresión de <span class="math inline">\(LogFoldChange &gt; 1\)</span> en valor absoluto,
 es decir, genes que al menos duplican o reducen a la mitad su expresión
 en el grupo Obeso tipo 2 respecto del grupo Normopeso.</p>
-<div id="visualización-de-los-resultados" class="section level4">
-<h4>Visualización de los resultados</h4>
+</div>
+<div id="visualización-de-los-resultados" class="section level3">
+<h3>Visualización de los resultados</h3>
 <p>La visualización global de los resultados se realizó mediante cuatro
 gráficos. Primero, un MA Plot generado por <code>plotMD()</code> que
 permite verificar la calidad de la normalización, mostrando una
@@ -930,8 +936,8 @@ análisis de expresión diferencial en R</strong>
 <span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(y)</span>
 <span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a><span class="co"># utilizamos esta funcion porque lo que queremos comparar es la expresion de cada gen entre</span></span>
 <span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a><span class="co"># diferentes muestras tenemos que normalizar porque EdgeR no lo hace:</span></span>
-<span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a><span class="co"># corregimos los datos para que las diferencias entre muestras reflejen verdaderos camnios biologicos</span></span>
-<span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a><span class="co"># y no por problemas tecnicos:</span></span>
+<span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a><span class="co"># corregimos los datos para que las diferencias entre muestras reflejen verdaderos</span></span>
+<span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a><span class="co"># cambios biologicos y no por problemas tecnicos:</span></span>
 <span id="cb3-88"><a href="#cb3-88" tabindex="-1"></a><span class="co"># En RNAseq cada muestra puede variar porque:</span></span>
 <span id="cb3-89"><a href="#cb3-89" tabindex="-1"></a>    <span class="co"># 1. tamaño de libreria: algunas muestras tienen mas lecturas que otras</span></span>
 <span id="cb3-90"><a href="#cb3-90" tabindex="-1"></a>    <span class="co"># 2. sesgo de composicion, si unos genes estan super expresados, los genes bajos aprece que </span></span>
@@ -950,239 +956,239 @@ análisis de expresión diferencial en R</strong>
 <span id="cb3-103"><a href="#cb3-103" tabindex="-1"></a><span class="co"># Estimar la dispersion</span></span>
 <span id="cb3-104"><a href="#cb3-104" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
 <span id="cb3-105"><a href="#cb3-105" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">estimateDisp</span>(y, design)</span>
-<span id="cb3-106"><a href="#cb3-106" tabindex="-1"></a>  <span class="co"># edgeR modela los conteos con una binomial negativa y estima dispersion comun y dispersion por gen</span></span>
-<span id="cb3-107"><a href="#cb3-107" tabindex="-1"></a></span>
-<span id="cb3-108"><a href="#cb3-108" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
-<span id="cb3-109"><a href="#cb3-109" tabindex="-1"></a><span class="co"># Ajustar el modelo y test estadistico</span></span>
-<span id="cb3-110"><a href="#cb3-110" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
-<span id="cb3-111"><a href="#cb3-111" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glmQLFit</span>(y, design) </span>
-<span id="cb3-112"><a href="#cb3-112" tabindex="-1"></a>qlf <span class="ot">&lt;-</span> <span class="fu">glmQLFTest</span>(fit, <span class="at">coef =</span> <span class="dv">2</span>) </span>
-<span id="cb3-113"><a href="#cb3-113" tabindex="-1"></a><span class="co"># glmQFTestcompara los levels por la columna 2 (coef=2) es decir: Normopeso sera la base y ver si</span></span>
-<span id="cb3-114"><a href="#cb3-114" tabindex="-1"></a><span class="co"># los genes se sobreexpresan o no en Sobrepeso</span></span>
-<span id="cb3-115"><a href="#cb3-115" tabindex="-1"></a></span>
-<span id="cb3-116"><a href="#cb3-116" tabindex="-1"></a><span class="co"># Guardamos todos los genes</span></span>
-<span id="cb3-117"><a href="#cb3-117" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">topTags</span>(qlf, <span class="at">n =</span> <span class="cn">Inf</span>)<span class="sc">$</span>table</span>
-<span id="cb3-118"><a href="#cb3-118" tabindex="-1"></a> <span class="co"># -&gt; logFC es el cambio de expr </span></span>
-<span id="cb3-119"><a href="#cb3-119" tabindex="-1"></a>    <span class="co">#-- Positivo → mas expresado en la condicion de interes. Negativo → menos expresado</span></span>
-<span id="cb3-120"><a href="#cb3-120" tabindex="-1"></a> <span class="co"># -&gt; pvalue es la significacion</span></span>
-<span id="cb3-121"><a href="#cb3-121" tabindex="-1"></a> <span class="co"># -&gt; FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos entre </span></span>
-<span id="cb3-122"><a href="#cb3-122" tabindex="-1"></a>    <span class="co"># los genes significativos (Es un pval corregido). FDR &lt; 0.05 es el estandar cientifico</span></span>
-<span id="cb3-123"><a href="#cb3-123" tabindex="-1"></a></span>
-<span id="cb3-124"><a href="#cb3-124" tabindex="-1"></a>deg <span class="ot">&lt;-</span> results[results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(results<span class="sc">$</span>logFC) <span class="sc">&gt;</span> <span class="dv">1</span>, ]</span>
-<span id="cb3-125"><a href="#cb3-125" tabindex="-1"></a>degFDR <span class="ot">&lt;-</span> results[results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>, ]</span>
-<span id="cb3-126"><a href="#cb3-126" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" tabindex="-1"></a>  <span class="co"># edgeR modela los conteos con una binomial negativa y estima dispersion comun y </span></span>
+<span id="cb3-107"><a href="#cb3-107" tabindex="-1"></a>  <span class="co"># dispersion por gen</span></span>
+<span id="cb3-108"><a href="#cb3-108" tabindex="-1"></a></span>
+<span id="cb3-109"><a href="#cb3-109" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
+<span id="cb3-110"><a href="#cb3-110" tabindex="-1"></a><span class="co"># Ajustar el modelo y test estadistico</span></span>
+<span id="cb3-111"><a href="#cb3-111" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
+<span id="cb3-112"><a href="#cb3-112" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glmQLFit</span>(y, design) </span>
+<span id="cb3-113"><a href="#cb3-113" tabindex="-1"></a>qlf <span class="ot">&lt;-</span> <span class="fu">glmQLFTest</span>(fit, <span class="at">coef =</span> <span class="dv">2</span>) </span>
+<span id="cb3-114"><a href="#cb3-114" tabindex="-1"></a><span class="co"># glmQFTestcompara los levels por la columna 2 (coef=2) es decir: Normopeso sera la base </span></span>
+<span id="cb3-115"><a href="#cb3-115" tabindex="-1"></a><span class="co"># y ver si los genes se sobreexpresan o no en Sobrepeso</span></span>
+<span id="cb3-116"><a href="#cb3-116" tabindex="-1"></a></span>
+<span id="cb3-117"><a href="#cb3-117" tabindex="-1"></a><span class="co"># Guardamos todos los genes</span></span>
+<span id="cb3-118"><a href="#cb3-118" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">topTags</span>(qlf, <span class="at">n =</span> <span class="cn">Inf</span>)<span class="sc">$</span>table</span>
+<span id="cb3-119"><a href="#cb3-119" tabindex="-1"></a> <span class="co"># -&gt; logFC es el cambio de expr </span></span>
+<span id="cb3-120"><a href="#cb3-120" tabindex="-1"></a>    <span class="co">#-- Positivo → mas expresado en la condicion de interes. Negativo → menos expresado</span></span>
+<span id="cb3-121"><a href="#cb3-121" tabindex="-1"></a> <span class="co"># -&gt; pvalue es la significacion</span></span>
+<span id="cb3-122"><a href="#cb3-122" tabindex="-1"></a> <span class="co"># -&gt; FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos</span></span>
+<span id="cb3-123"><a href="#cb3-123" tabindex="-1"></a>  <span class="co"># entre los genes significativos (Es un pval corregido). FDR &lt; 0.05 es el estandar cientifico</span></span>
+<span id="cb3-124"><a href="#cb3-124" tabindex="-1"></a></span>
+<span id="cb3-125"><a href="#cb3-125" tabindex="-1"></a>deg <span class="ot">&lt;-</span> results[results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(results<span class="sc">$</span>logFC) <span class="sc">&gt;</span> <span class="dv">1</span>, ]</span>
+<span id="cb3-126"><a href="#cb3-126" tabindex="-1"></a>degFDR <span class="ot">&lt;-</span> results[results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>, ]</span>
 <span id="cb3-127"><a href="#cb3-127" tabindex="-1"></a></span>
-<span id="cb3-128"><a href="#cb3-128" tabindex="-1"></a><span class="co"># Resumen EdgeR ----------</span></span>
-<span id="cb3-129"><a href="#cb3-129" tabindex="-1"></a><span class="co">#  Conteos → DGEList</span></span>
-<span id="cb3-130"><a href="#cb3-130" tabindex="-1"></a><span class="co">#  Filtrado → quitar ruido</span></span>
-<span id="cb3-131"><a href="#cb3-131" tabindex="-1"></a><span class="co">#  Normalización → hacer muestras comparables</span></span>
-<span id="cb3-132"><a href="#cb3-132" tabindex="-1"></a><span class="co">#  Modelo → biología experimental</span></span>
-<span id="cb3-133"><a href="#cb3-133" tabindex="-1"></a><span class="co">#  Dispersión → variabilidad real</span></span>
-<span id="cb3-134"><a href="#cb3-134" tabindex="-1"></a><span class="co">#  Test → genes diferenciales</span></span>
-<span id="cb3-135"><a href="#cb3-135" tabindex="-1"></a></span>
+<span id="cb3-128"><a href="#cb3-128" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" tabindex="-1"></a><span class="co"># Resumen EdgeR ----------</span></span>
+<span id="cb3-130"><a href="#cb3-130" tabindex="-1"></a><span class="co">#  Conteos → DGEList</span></span>
+<span id="cb3-131"><a href="#cb3-131" tabindex="-1"></a><span class="co">#  Filtrado → quitar ruido</span></span>
+<span id="cb3-132"><a href="#cb3-132" tabindex="-1"></a><span class="co">#  Normalización → hacer muestras comparables</span></span>
+<span id="cb3-133"><a href="#cb3-133" tabindex="-1"></a><span class="co">#  Modelo → biología experimental</span></span>
+<span id="cb3-134"><a href="#cb3-134" tabindex="-1"></a><span class="co">#  Dispersión → variabilidad real</span></span>
+<span id="cb3-135"><a href="#cb3-135" tabindex="-1"></a><span class="co">#  Test → genes diferenciales</span></span>
 <span id="cb3-136"><a href="#cb3-136" tabindex="-1"></a></span>
 <span id="cb3-137"><a href="#cb3-137" tabindex="-1"></a></span>
-<span id="cb3-138"><a href="#cb3-138" tabindex="-1"></a><span class="co">#------------------------- Visualizacion de datos -----------------------------</span></span>
-<span id="cb3-139"><a href="#cb3-139" tabindex="-1"></a></span>
-<span id="cb3-140"><a href="#cb3-140" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
-<span id="cb3-141"><a href="#cb3-141" tabindex="-1"></a><span class="co"># Definir umbrales de significancia</span></span>
-<span id="cb3-142"><a href="#cb3-142" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
-<span id="cb3-143"><a href="#cb3-143" tabindex="-1"></a>FDR_threshold <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb3-144"><a href="#cb3-144" tabindex="-1"></a>logFC_threshold <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#(significa que la expresion se duplica o se reduce a la mitad)</span></span>
-<span id="cb3-145"><a href="#cb3-145" tabindex="-1"></a></span>
-<span id="cb3-146"><a href="#cb3-146" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">decideTests</span>(qlf, <span class="at">p.value =</span> FDR_threshold)</span>
-<span id="cb3-147"><a href="#cb3-147" tabindex="-1"></a></span>
+<span id="cb3-138"><a href="#cb3-138" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" tabindex="-1"></a><span class="co">#------------------------- Visualizacion de datos -----------------------------</span></span>
+<span id="cb3-140"><a href="#cb3-140" tabindex="-1"></a></span>
+<span id="cb3-141"><a href="#cb3-141" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
+<span id="cb3-142"><a href="#cb3-142" tabindex="-1"></a><span class="co"># Definir umbrales de significancia</span></span>
+<span id="cb3-143"><a href="#cb3-143" tabindex="-1"></a><span class="co"># ---------------------------------------</span></span>
+<span id="cb3-144"><a href="#cb3-144" tabindex="-1"></a>FDR_threshold <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb3-145"><a href="#cb3-145" tabindex="-1"></a>logFC_threshold <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#(significa que la expresion se duplica o se reduce a la mitad)</span></span>
+<span id="cb3-146"><a href="#cb3-146" tabindex="-1"></a></span>
+<span id="cb3-147"><a href="#cb3-147" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">decideTests</span>(qlf, <span class="at">p.value =</span> FDR_threshold)</span>
 <span id="cb3-148"><a href="#cb3-148" tabindex="-1"></a></span>
-<span id="cb3-149"><a href="#cb3-149" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb3-150"><a href="#cb3-150" tabindex="-1"></a><span class="co">#                                      MA plot</span></span>
-<span id="cb3-151"><a href="#cb3-151" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb3-152"><a href="#cb3-152" tabindex="-1"></a><span class="co"># 1. Generar el gráfico</span></span>
-<span id="cb3-153"><a href="#cb3-153" tabindex="-1"></a><span class="co"># values=c(1, -1) indica que queremos colorear los que suben (1) y bajan (-1)</span></span>
-<span id="cb3-154"><a href="#cb3-154" tabindex="-1"></a><span class="co"># col=c(&quot;blue&quot;, &quot;red&quot;) asigna azul a los que bajan y rojo a los que suben (puedes cambiarlo)</span></span>
-<span id="cb3-155"><a href="#cb3-155" tabindex="-1"></a><span class="fu">plotMD</span>(qlf, <span class="at">status =</span> status, <span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>),</span>
-<span id="cb3-156"><a href="#cb3-156" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">&quot;MA Plot: Normopeso vs Sobrepeso tipo 2&quot;</span>,</span>
-<span id="cb3-157"><a href="#cb3-157" tabindex="-1"></a>       <span class="at">hl.cex =</span> <span class="fl">1.5</span>, <span class="at">bg.cex =</span> <span class="dv">1</span>, <span class="at">legend=</span><span class="cn">FALSE</span>) <span class="co"># Tamaño de los puntos resaltados</span></span>
-<span id="cb3-158"><a href="#cb3-158" tabindex="-1"></a><span class="co"># 2. Añadir leyenda (opcional pero recomendado)</span></span>
-<span id="cb3-159"><a href="#cb3-159" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Sobreexpresado&quot;</span>, <span class="st">&quot;Infraexpresado&quot;</span>, <span class="st">&quot;No significativo&quot;</span>),</span>
-<span id="cb3-160"><a href="#cb3-160" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>), <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
-<span id="cb3-161"><a href="#cb3-161" tabindex="-1"></a></span>
-<span id="cb3-162"><a href="#cb3-162" tabindex="-1"></a><span class="co"># 3. (Opcional) Añadir líneas horizontales en logFC 0</span></span>
-<span id="cb3-163"><a href="#cb3-163" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col=</span><span class="st">&quot;gray&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb3-164"><a href="#cb3-164" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb3-165"><a href="#cb3-165" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb3-166"><a href="#cb3-166" tabindex="-1"></a></span>
-<span id="cb3-167"><a href="#cb3-167" tabindex="-1"></a>genes_candidatos <span class="ot">&lt;-</span> results[<span class="fu">abs</span>(results<span class="sc">$</span>logFC) <span class="sc">&gt;</span> <span class="fl">0.7</span>, ]</span>
-<span id="cb3-168"><a href="#cb3-168" tabindex="-1"></a></span>
-<span id="cb3-169"><a href="#cb3-169" tabindex="-1"></a>ajuste_y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rownames</span>(genes_candidatos) <span class="sc">==</span> <span class="st">&quot;BDNF&quot;</span>, <span class="fl">0.2</span>, <span class="dv">0</span>)</span>
-<span id="cb3-170"><a href="#cb3-170" tabindex="-1"></a><span class="co"># 4. Pintamos las etiquetas limpias</span></span>
-<span id="cb3-171"><a href="#cb3-171" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> genes_candidatos<span class="sc">$</span>logCPM, </span>
-<span id="cb3-172"><a href="#cb3-172" tabindex="-1"></a>     <span class="at">y =</span> genes_candidatos<span class="sc">$</span>logFC <span class="sc">+</span> ajuste_y, </span>
-<span id="cb3-173"><a href="#cb3-173" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">rownames</span>(genes_candidatos), </span>
-<span id="cb3-174"><a href="#cb3-174" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.8</span>,   <span class="co"># Tamaño letra</span></span>
-<span id="cb3-175"><a href="#cb3-175" tabindex="-1"></a>     <span class="at">pos =</span> <span class="dv">1</span>, </span>
-<span id="cb3-176"><a href="#cb3-176" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
-<span id="cb3-177"><a href="#cb3-177" tabindex="-1"></a></span>
+<span id="cb3-149"><a href="#cb3-149" tabindex="-1"></a></span>
+<span id="cb3-150"><a href="#cb3-150" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb3-151"><a href="#cb3-151" tabindex="-1"></a><span class="co">#                                      MA plot</span></span>
+<span id="cb3-152"><a href="#cb3-152" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb3-153"><a href="#cb3-153" tabindex="-1"></a><span class="co"># 1. Generar el gráfico</span></span>
+<span id="cb3-154"><a href="#cb3-154" tabindex="-1"></a><span class="co"># values=c(1, -1) indica que queremos colorear los que suben (1) y bajan (-1)</span></span>
+<span id="cb3-155"><a href="#cb3-155" tabindex="-1"></a><span class="co"># col=c(&quot;blue&quot;, &quot;red&quot;) asigna azul a los que bajan y rojo a los que suben (puedes cambiarlo)</span></span>
+<span id="cb3-156"><a href="#cb3-156" tabindex="-1"></a><span class="fu">plotMD</span>(qlf, <span class="at">status =</span> status, <span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>),</span>
+<span id="cb3-157"><a href="#cb3-157" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">&quot;MA Plot: Normopeso vs Sobrepeso tipo 2&quot;</span>,</span>
+<span id="cb3-158"><a href="#cb3-158" tabindex="-1"></a>       <span class="at">hl.cex =</span> <span class="fl">1.5</span>, <span class="at">bg.cex =</span> <span class="dv">1</span>, <span class="at">legend=</span><span class="cn">FALSE</span>) <span class="co"># Tamaño de los puntos resaltados</span></span>
+<span id="cb3-159"><a href="#cb3-159" tabindex="-1"></a><span class="co"># 2. Añadir leyenda (opcional pero recomendado)</span></span>
+<span id="cb3-160"><a href="#cb3-160" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Sobreexpresado&quot;</span>, <span class="st">&quot;Infraexpresado&quot;</span>, <span class="st">&quot;No significativo&quot;</span>),</span>
+<span id="cb3-161"><a href="#cb3-161" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>), <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.8</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb3-162"><a href="#cb3-162" tabindex="-1"></a></span>
+<span id="cb3-163"><a href="#cb3-163" tabindex="-1"></a><span class="co"># 3. (Opcional) Añadir líneas horizontales en logFC 0</span></span>
+<span id="cb3-164"><a href="#cb3-164" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">col=</span><span class="st">&quot;gray&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb3-165"><a href="#cb3-165" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb3-166"><a href="#cb3-166" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="sc">-</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;black&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb3-167"><a href="#cb3-167" tabindex="-1"></a></span>
+<span id="cb3-168"><a href="#cb3-168" tabindex="-1"></a>genes_candidatos <span class="ot">&lt;-</span> results[<span class="fu">abs</span>(results<span class="sc">$</span>logFC) <span class="sc">&gt;</span> <span class="fl">0.7</span>, ]</span>
+<span id="cb3-169"><a href="#cb3-169" tabindex="-1"></a></span>
+<span id="cb3-170"><a href="#cb3-170" tabindex="-1"></a>ajuste_y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rownames</span>(genes_candidatos) <span class="sc">==</span> <span class="st">&quot;BDNF&quot;</span>, <span class="fl">0.2</span>, <span class="dv">0</span>)</span>
+<span id="cb3-171"><a href="#cb3-171" tabindex="-1"></a><span class="co"># 4. Pintamos las etiquetas limpias</span></span>
+<span id="cb3-172"><a href="#cb3-172" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> genes_candidatos<span class="sc">$</span>logCPM, </span>
+<span id="cb3-173"><a href="#cb3-173" tabindex="-1"></a>     <span class="at">y =</span> genes_candidatos<span class="sc">$</span>logFC <span class="sc">+</span> ajuste_y, </span>
+<span id="cb3-174"><a href="#cb3-174" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">rownames</span>(genes_candidatos), </span>
+<span id="cb3-175"><a href="#cb3-175" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.8</span>,   <span class="co"># Tamaño letra</span></span>
+<span id="cb3-176"><a href="#cb3-176" tabindex="-1"></a>     <span class="at">pos =</span> <span class="dv">1</span>, </span>
+<span id="cb3-177"><a href="#cb3-177" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
 <span id="cb3-178"><a href="#cb3-178" tabindex="-1"></a></span>
 <span id="cb3-179"><a href="#cb3-179" tabindex="-1"></a></span>
-<span id="cb3-180"><a href="#cb3-180" tabindex="-1"></a><span class="co">#------------------------------------------------------------------------------</span></span>
-<span id="cb3-181"><a href="#cb3-181" tabindex="-1"></a><span class="co">#                                 VOLCANO PLOT</span></span>
-<span id="cb3-182"><a href="#cb3-182" tabindex="-1"></a><span class="co">#------------------------------------------------------------------------------</span></span>
-<span id="cb3-183"><a href="#cb3-183" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
-<span id="cb3-184"><a href="#cb3-184" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-185"><a href="#cb3-185" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb3-186"><a href="#cb3-186" tabindex="-1"></a></span>
-<span id="cb3-187"><a href="#cb3-187" tabindex="-1"></a><span class="co"># --- PASO 1: DEFINIR LOS COLORES (Crear el objeto &#39;keyvals&#39;) ---</span></span>
-<span id="cb3-188"><a href="#cb3-188" tabindex="-1"></a></span>
-<span id="cb3-189"><a href="#cb3-189" tabindex="-1"></a><span class="co"># Primero ponemos todo en negro (&#39;NS&#39; = No Significativo)</span></span>
-<span id="cb3-190"><a href="#cb3-190" tabindex="-1"></a>keyvals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">&#39;darkgrey&#39;</span>, <span class="fu">nrow</span>(results))</span>
-<span id="cb3-191"><a href="#cb3-191" tabindex="-1"></a><span class="fu">names</span>(keyvals) <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">&#39;No significativo&#39;</span>, <span class="fu">nrow</span>(results))</span>
-<span id="cb3-192"><a href="#cb3-192" tabindex="-1"></a></span>
-<span id="cb3-193"><a href="#cb3-193" tabindex="-1"></a><span class="co"># Pintamos de ROJO los que suben (logFC &gt; 1 y FDR &lt; 0.05)</span></span>
-<span id="cb3-194"><a href="#cb3-194" tabindex="-1"></a><span class="co"># Asegúrate de que tus columnas se llaman logFC y FDR</span></span>
-<span id="cb3-195"><a href="#cb3-195" tabindex="-1"></a>keyvals[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;red&#39;</span></span>
-<span id="cb3-196"><a href="#cb3-196" tabindex="-1"></a><span class="fu">names</span>(keyvals)[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;Sobreexpresados&#39;</span></span>
-<span id="cb3-197"><a href="#cb3-197" tabindex="-1"></a></span>
-<span id="cb3-198"><a href="#cb3-198" tabindex="-1"></a><span class="co"># Pintamos de AZUL los que bajan (logFC &lt; -1 y FDR &lt; 0.05)</span></span>
-<span id="cb3-199"><a href="#cb3-199" tabindex="-1"></a>keyvals[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;blue&#39;</span></span>
-<span id="cb3-200"><a href="#cb3-200" tabindex="-1"></a><span class="fu">names</span>(keyvals)[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;Infraexpresados&#39;</span></span>
-<span id="cb3-201"><a href="#cb3-201" tabindex="-1"></a></span>
-<span id="cb3-202"><a href="#cb3-202" tabindex="-1"></a>genes_significativos <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">which</span>(<span class="fu">names</span>(keyvals) <span class="sc">%in%</span> </span>
-<span id="cb3-203"><a href="#cb3-203" tabindex="-1"></a>                                                  <span class="fu">c</span>(<span class="st">&#39;Sobreexpresados&#39;</span>, <span class="st">&#39;Infraexpresados&#39;</span>))]</span>
-<span id="cb3-204"><a href="#cb3-204" tabindex="-1"></a>genes_limite <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">which</span>(results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)]</span>
-<span id="cb3-205"><a href="#cb3-205" tabindex="-1"></a></span>
-<span id="cb3-206"><a href="#cb3-206" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(results,</span>
-<span id="cb3-207"><a href="#cb3-207" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Expresión diferencial génica: </span><span class="sc">\n</span><span class="st">Normopeso vs Sobrepeso/Obeso tipo 2&quot;</span>,</span>
-<span id="cb3-208"><a href="#cb3-208" tabindex="-1"></a>                <span class="at">lab =</span> <span class="fu">rownames</span>(results),</span>
-<span id="cb3-209"><a href="#cb3-209" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">&quot;logFC&quot;</span>,</span>
-<span id="cb3-210"><a href="#cb3-210" tabindex="-1"></a>                <span class="at">y =</span> <span class="st">&quot;FDR&quot;</span>,</span>
-<span id="cb3-211"><a href="#cb3-211" tabindex="-1"></a>                <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">7</span>),</span>
-<span id="cb3-212"><a href="#cb3-212" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>),</span>
-<span id="cb3-213"><a href="#cb3-213" tabindex="-1"></a>                <span class="at">selectLab =</span> <span class="fu">unique</span>(<span class="fu">c</span>(genes_significativos, genes_limite)), <span class="co"># Solo los significativos</span></span>
-<span id="cb3-214"><a href="#cb3-214" tabindex="-1"></a>                <span class="at">xlab =</span> <span class="fu">bquote</span>(<span class="sc">~</span>Log[<span class="dv">2</span>]<span class="sc">~</span> <span class="st">&#39;fold change&#39;</span>),</span>
-<span id="cb3-215"><a href="#cb3-215" tabindex="-1"></a>                <span class="at">ylab =</span> <span class="fu">bquote</span>(<span class="sc">~-</span>Log[<span class="dv">10</span>]<span class="sc">~</span> <span class="st">&quot;FDR&quot;</span>),</span>
-<span id="cb3-216"><a href="#cb3-216" tabindex="-1"></a>                <span class="at">pCutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb3-217"><a href="#cb3-217" tabindex="-1"></a>                <span class="at">FCcutoff =</span> <span class="dv">1</span>,</span>
-<span id="cb3-218"><a href="#cb3-218" tabindex="-1"></a>                <span class="at">pointSize =</span> <span class="fl">2.5</span>,</span>
-<span id="cb3-219"><a href="#cb3-219" tabindex="-1"></a>                <span class="at">labSize =</span> <span class="fl">5.5</span>,</span>
-<span id="cb3-220"><a href="#cb3-220" tabindex="-1"></a>                <span class="at">colCustom =</span> keyvals,</span>
-<span id="cb3-221"><a href="#cb3-221" tabindex="-1"></a>                <span class="at">colAlpha =</span> <span class="fl">0.8</span>,</span>
-<span id="cb3-222"><a href="#cb3-222" tabindex="-1"></a>                <span class="at">legendPosition =</span> <span class="st">&#39;right&#39;</span>,</span>
-<span id="cb3-223"><a href="#cb3-223" tabindex="-1"></a>                <span class="at">legendLabSize =</span> <span class="dv">10</span>,</span>
-<span id="cb3-224"><a href="#cb3-224" tabindex="-1"></a>                <span class="at">legendIconSize =</span> <span class="dv">2</span>,</span>
-<span id="cb3-225"><a href="#cb3-225" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,    <span class="co"># Activa las líneas conectoras</span></span>
-<span id="cb3-226"><a href="#cb3-226" tabindex="-1"></a>                <span class="at">widthConnectors =</span> <span class="fl">0.01</span>,    <span class="co"># Grosor de la línea</span></span>
-<span id="cb3-227"><a href="#cb3-227" tabindex="-1"></a>                <span class="at">colConnectors =</span> <span class="st">&quot;white&quot;</span>, <span class="co"># Color de la línea (blanco)</span></span>
-<span id="cb3-228"><a href="#cb3-228" tabindex="-1"></a>                <span class="at">arrowheads =</span> <span class="cn">FALSE</span></span>
-<span id="cb3-229"><a href="#cb3-229" tabindex="-1"></a>                )</span>
-<span id="cb3-230"><a href="#cb3-230" tabindex="-1"></a></span>
+<span id="cb3-180"><a href="#cb3-180" tabindex="-1"></a></span>
+<span id="cb3-181"><a href="#cb3-181" tabindex="-1"></a><span class="co">#------------------------------------------------------------------------------</span></span>
+<span id="cb3-182"><a href="#cb3-182" tabindex="-1"></a><span class="co">#                                 VOLCANO PLOT</span></span>
+<span id="cb3-183"><a href="#cb3-183" tabindex="-1"></a><span class="co">#------------------------------------------------------------------------------</span></span>
+<span id="cb3-184"><a href="#cb3-184" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
+<span id="cb3-185"><a href="#cb3-185" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-186"><a href="#cb3-186" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb3-187"><a href="#cb3-187" tabindex="-1"></a></span>
+<span id="cb3-188"><a href="#cb3-188" tabindex="-1"></a><span class="co"># --- PASO 1: DEFINIR LOS COLORES (Crear el objeto &#39;keyvals&#39;) ---</span></span>
+<span id="cb3-189"><a href="#cb3-189" tabindex="-1"></a></span>
+<span id="cb3-190"><a href="#cb3-190" tabindex="-1"></a><span class="co"># Primero ponemos todo en negro (&#39;NS&#39; = No Significativo)</span></span>
+<span id="cb3-191"><a href="#cb3-191" tabindex="-1"></a>keyvals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">&#39;darkgrey&#39;</span>, <span class="fu">nrow</span>(results))</span>
+<span id="cb3-192"><a href="#cb3-192" tabindex="-1"></a><span class="fu">names</span>(keyvals) <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">&#39;No significativo&#39;</span>, <span class="fu">nrow</span>(results))</span>
+<span id="cb3-193"><a href="#cb3-193" tabindex="-1"></a></span>
+<span id="cb3-194"><a href="#cb3-194" tabindex="-1"></a><span class="co"># Pintamos de ROJO los que suben (logFC &gt; 1 y FDR &lt; 0.05)</span></span>
+<span id="cb3-195"><a href="#cb3-195" tabindex="-1"></a><span class="co"># Asegúrate de que tus columnas se llaman logFC y FDR</span></span>
+<span id="cb3-196"><a href="#cb3-196" tabindex="-1"></a>keyvals[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;red&#39;</span></span>
+<span id="cb3-197"><a href="#cb3-197" tabindex="-1"></a><span class="fu">names</span>(keyvals)[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;Sobreexpresados&#39;</span></span>
+<span id="cb3-198"><a href="#cb3-198" tabindex="-1"></a></span>
+<span id="cb3-199"><a href="#cb3-199" tabindex="-1"></a><span class="co"># Pintamos de AZUL los que bajan (logFC &lt; -1 y FDR &lt; 0.05)</span></span>
+<span id="cb3-200"><a href="#cb3-200" tabindex="-1"></a>keyvals[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;blue&#39;</span></span>
+<span id="cb3-201"><a href="#cb3-201" tabindex="-1"></a><span class="fu">names</span>(keyvals)[<span class="fu">which</span>(results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">&amp;</span> results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)] <span class="ot">&lt;-</span> <span class="st">&#39;Infraexpresados&#39;</span></span>
+<span id="cb3-202"><a href="#cb3-202" tabindex="-1"></a></span>
+<span id="cb3-203"><a href="#cb3-203" tabindex="-1"></a>genes_significativos <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">which</span>(<span class="fu">names</span>(keyvals) <span class="sc">%in%</span> </span>
+<span id="cb3-204"><a href="#cb3-204" tabindex="-1"></a>                                                  <span class="fu">c</span>(<span class="st">&#39;Sobreexpresados&#39;</span>, <span class="st">&#39;Infraexpresados&#39;</span>))]</span>
+<span id="cb3-205"><a href="#cb3-205" tabindex="-1"></a>genes_limite <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">which</span>(results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)]</span>
+<span id="cb3-206"><a href="#cb3-206" tabindex="-1"></a></span>
+<span id="cb3-207"><a href="#cb3-207" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(results,</span>
+<span id="cb3-208"><a href="#cb3-208" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Expresión diferencial génica: </span><span class="sc">\n</span><span class="st">Normopeso vs Sobrepeso/Obeso tipo 2&quot;</span>,</span>
+<span id="cb3-209"><a href="#cb3-209" tabindex="-1"></a>                <span class="at">lab =</span> <span class="fu">rownames</span>(results),</span>
+<span id="cb3-210"><a href="#cb3-210" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">&quot;logFC&quot;</span>,</span>
+<span id="cb3-211"><a href="#cb3-211" tabindex="-1"></a>                <span class="at">y =</span> <span class="st">&quot;FDR&quot;</span>,</span>
+<span id="cb3-212"><a href="#cb3-212" tabindex="-1"></a>                <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">7</span>),</span>
+<span id="cb3-213"><a href="#cb3-213" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>),</span>
+<span id="cb3-214"><a href="#cb3-214" tabindex="-1"></a>                <span class="at">selectLab =</span> <span class="fu">unique</span>(<span class="fu">c</span>(genes_significativos, genes_limite)), <span class="co"># solo significativos</span></span>
+<span id="cb3-215"><a href="#cb3-215" tabindex="-1"></a>                <span class="at">xlab =</span> <span class="fu">bquote</span>(<span class="sc">~</span>Log[<span class="dv">2</span>]<span class="sc">~</span> <span class="st">&#39;fold change&#39;</span>),</span>
+<span id="cb3-216"><a href="#cb3-216" tabindex="-1"></a>                <span class="at">ylab =</span> <span class="fu">bquote</span>(<span class="sc">~-</span>Log[<span class="dv">10</span>]<span class="sc">~</span> <span class="st">&quot;FDR&quot;</span>),</span>
+<span id="cb3-217"><a href="#cb3-217" tabindex="-1"></a>                <span class="at">pCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb3-218"><a href="#cb3-218" tabindex="-1"></a>                <span class="at">FCcutoff =</span> <span class="dv">1</span>,</span>
+<span id="cb3-219"><a href="#cb3-219" tabindex="-1"></a>                <span class="at">pointSize =</span> <span class="fl">2.5</span>,</span>
+<span id="cb3-220"><a href="#cb3-220" tabindex="-1"></a>                <span class="at">labSize =</span> <span class="fl">5.5</span>,</span>
+<span id="cb3-221"><a href="#cb3-221" tabindex="-1"></a>                <span class="at">colCustom =</span> keyvals,</span>
+<span id="cb3-222"><a href="#cb3-222" tabindex="-1"></a>                <span class="at">colAlpha =</span> <span class="fl">0.8</span>,</span>
+<span id="cb3-223"><a href="#cb3-223" tabindex="-1"></a>                <span class="at">legendPosition =</span> <span class="st">&#39;right&#39;</span>,</span>
+<span id="cb3-224"><a href="#cb3-224" tabindex="-1"></a>                <span class="at">legendLabSize =</span> <span class="dv">10</span>,</span>
+<span id="cb3-225"><a href="#cb3-225" tabindex="-1"></a>                <span class="at">legendIconSize =</span> <span class="dv">2</span>,</span>
+<span id="cb3-226"><a href="#cb3-226" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,    <span class="co"># Activa las líneas conectoras</span></span>
+<span id="cb3-227"><a href="#cb3-227" tabindex="-1"></a>                <span class="at">widthConnectors =</span> <span class="fl">0.01</span>,    <span class="co"># Grosor de la línea</span></span>
+<span id="cb3-228"><a href="#cb3-228" tabindex="-1"></a>                <span class="at">colConnectors =</span> <span class="st">&quot;white&quot;</span>, <span class="co"># Color de la línea (blanco)</span></span>
+<span id="cb3-229"><a href="#cb3-229" tabindex="-1"></a>                <span class="at">arrowheads =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-230"><a href="#cb3-230" tabindex="-1"></a>                )</span>
 <span id="cb3-231"><a href="#cb3-231" tabindex="-1"></a></span>
-<span id="cb3-232"><a href="#cb3-232" tabindex="-1"></a><span class="co">#-----------------------------------------------------------</span></span>
-<span id="cb3-233"><a href="#cb3-233" tabindex="-1"></a><span class="co">#-----------------------    PHEATMAP     -------------------</span></span>
-<span id="cb3-234"><a href="#cb3-234" tabindex="-1"></a><span class="co">#-----------------------------------------------------------</span></span>
-<span id="cb3-235"><a href="#cb3-235" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
-<span id="cb3-236"><a href="#cb3-236" tabindex="-1"></a><span class="co"># 1. Calculamos los logCPM de TODAS tus muestras</span></span>
-<span id="cb3-237"><a href="#cb3-237" tabindex="-1"></a><span class="co"># Usamos el objeto &#39;qlf&#39; o &#39;y&#39; (tu objeto DGEList original)</span></span>
-<span id="cb3-238"><a href="#cb3-238" tabindex="-1"></a>logCPM <span class="ot">&lt;-</span> <span class="fu">cpm</span>(y, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
-<span id="cb3-239"><a href="#cb3-239" tabindex="-1"></a></span>
-<span id="cb3-240"><a href="#cb3-240" tabindex="-1"></a><span class="co"># 2. Seleccionamos solo los Mejores Genes</span></span>
-<span id="cb3-241"><a href="#cb3-241" tabindex="-1"></a><span class="co"># No podemos pintar 20,000 genes, así que cogemos los Top 30 o 50 de tu tabla de resultados</span></span>
-<span id="cb3-242"><a href="#cb3-242" tabindex="-1"></a><span class="co"># Ordenamos por FDR (los más significativos primero)</span></span>
-<span id="cb3-243"><a href="#cb3-243" tabindex="-1"></a>nombres_genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">order</span>(results<span class="sc">$</span>FDR)]</span>
-<span id="cb3-244"><a href="#cb3-244" tabindex="-1"></a></span>
-<span id="cb3-245"><a href="#cb3-245" tabindex="-1"></a><span class="co"># 3. Recortamos la matriz: Nos quedamos solo con las filas de esos genes top</span></span>
-<span id="cb3-246"><a href="#cb3-246" tabindex="-1"></a>matriz_heatmap <span class="ot">&lt;-</span> logCPM[nombres_genes, ]</span>
-<span id="cb3-247"><a href="#cb3-247" tabindex="-1"></a></span>
-<span id="cb3-248"><a href="#cb3-248" tabindex="-1"></a><span class="co"># 4. Crear la tabla de anotaciones (la leyenda de las columnas)</span></span>
-<span id="cb3-249"><a href="#cb3-249" tabindex="-1"></a><span class="co"># Asegúrate de que &#39;qlf$samples$group&#39; existe. Si no, usa tu vector de grupos original.</span></span>
-<span id="cb3-250"><a href="#cb3-250" tabindex="-1"></a>anotaciones_muestras <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Grupo =</span> y<span class="sc">$</span>samples<span class="sc">$</span>group, <span class="at">Sexo =</span> sample_info<span class="sc">$</span>Sexo,</span>
-<span id="cb3-251"><a href="#cb3-251" tabindex="-1"></a>                                   <span class="at">Edad =</span> sample_info<span class="sc">$</span>Edad)</span>
-<span id="cb3-252"><a href="#cb3-252" tabindex="-1"></a></span>
-<span id="cb3-253"><a href="#cb3-253" tabindex="-1"></a><span class="co"># Importante: Los nombres de fila de esta tabla deben coincidir con las columnas del heatmap</span></span>
-<span id="cb3-254"><a href="#cb3-254" tabindex="-1"></a><span class="fu">rownames</span>(anotaciones_muestras) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(matriz_heatmap)</span>
-<span id="cb3-255"><a href="#cb3-255" tabindex="-1"></a></span>
-<span id="cb3-256"><a href="#cb3-256" tabindex="-1"></a><span class="co"># 5. Definir colores bonitos para los grupos</span></span>
-<span id="cb3-257"><a href="#cb3-257" tabindex="-1"></a>colores_anotacion <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb3-258"><a href="#cb3-258" tabindex="-1"></a>  <span class="at">Grupo =</span> <span class="fu">c</span>(<span class="at">Normopeso =</span> <span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;Sobrepeso/Obeso2&quot;</span> <span class="ot">=</span> <span class="st">&quot;coral1&quot;</span>),</span>
-<span id="cb3-259"><a href="#cb3-259" tabindex="-1"></a>  <span class="at">Sexo =</span> <span class="fu">c</span>(<span class="at">Masculino =</span> <span class="st">&quot;royalblue1&quot;</span>, <span class="at">Femenino =</span> <span class="st">&quot;plum1&quot;</span>),</span>
-<span id="cb3-260"><a href="#cb3-260" tabindex="-1"></a>  <span class="at">Edad =</span> <span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;gold&quot;</span>, <span class="st">&quot;orange&quot;</span>)</span>
-<span id="cb3-261"><a href="#cb3-261" tabindex="-1"></a>)</span>
-<span id="cb3-262"><a href="#cb3-262" tabindex="-1"></a></span>
-<span id="cb3-263"><a href="#cb3-263" tabindex="-1"></a><span class="co"># 6. Pintar el Heatmap CON la barra de grupos</span></span>
-<span id="cb3-264"><a href="#cb3-264" tabindex="-1"></a><span class="fu">pheatmap</span>(matriz_heatmap,</span>
-<span id="cb3-265"><a href="#cb3-265" tabindex="-1"></a>         <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>,</span>
-<span id="cb3-266"><a href="#cb3-266" tabindex="-1"></a>         <span class="at">annotation_col =</span> anotaciones_muestras, <span class="co"># Añadimos la barra</span></span>
-<span id="cb3-267"><a href="#cb3-267" tabindex="-1"></a>         <span class="at">annotation_colors =</span> colores_anotacion, <span class="co"># Añadimos los colores</span></span>
-<span id="cb3-268"><a href="#cb3-268" tabindex="-1"></a>         <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb3-269"><a href="#cb3-269" tabindex="-1"></a>         <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb3-270"><a href="#cb3-270" tabindex="-1"></a>         <span class="at">cutree_rows =</span> <span class="dv">4</span>,  <span class="co"># Corta el árbol de genes en 2 bloques (Suben vs Bajan)</span></span>
-<span id="cb3-271"><a href="#cb3-271" tabindex="-1"></a>         <span class="at">cutree_cols =</span> <span class="dv">3</span>,</span>
-<span id="cb3-272"><a href="#cb3-272" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">&quot;ward.D2&quot;</span>,</span>
-<span id="cb3-273"><a href="#cb3-273" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">&quot;Expresión génica: Normopeso vs Sobrepeso/Obeso tipo 2&quot;</span>,</span>
-<span id="cb3-274"><a href="#cb3-274" tabindex="-1"></a>         <span class="at">color =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;navy&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;firebrick3&quot;</span>))(<span class="dv">100</span>)</span>
-<span id="cb3-275"><a href="#cb3-275" tabindex="-1"></a>)</span>
-<span id="cb3-276"><a href="#cb3-276" tabindex="-1"></a></span>
+<span id="cb3-232"><a href="#cb3-232" tabindex="-1"></a></span>
+<span id="cb3-233"><a href="#cb3-233" tabindex="-1"></a><span class="co">#-----------------------------------------------------------</span></span>
+<span id="cb3-234"><a href="#cb3-234" tabindex="-1"></a><span class="co">#-----------------------    PHEATMAP     -------------------</span></span>
+<span id="cb3-235"><a href="#cb3-235" tabindex="-1"></a><span class="co">#-----------------------------------------------------------</span></span>
+<span id="cb3-236"><a href="#cb3-236" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb3-237"><a href="#cb3-237" tabindex="-1"></a><span class="co"># 1. Calculamos los logCPM de TODAS tus muestras</span></span>
+<span id="cb3-238"><a href="#cb3-238" tabindex="-1"></a><span class="co"># Usamos el objeto &#39;qlf&#39; o &#39;y&#39; (tu objeto DGEList original)</span></span>
+<span id="cb3-239"><a href="#cb3-239" tabindex="-1"></a>logCPM <span class="ot">&lt;-</span> <span class="fu">cpm</span>(y, <span class="at">log=</span><span class="cn">TRUE</span>)</span>
+<span id="cb3-240"><a href="#cb3-240" tabindex="-1"></a></span>
+<span id="cb3-241"><a href="#cb3-241" tabindex="-1"></a><span class="co"># 2. Seleccionamos solo los Mejores Genes</span></span>
+<span id="cb3-242"><a href="#cb3-242" tabindex="-1"></a><span class="co"># No podemos pintar 20,000 genes, así que cogemos los Top 30 o 50 de tu tabla de resultados</span></span>
+<span id="cb3-243"><a href="#cb3-243" tabindex="-1"></a><span class="co"># Ordenamos por FDR (los más significativos primero)</span></span>
+<span id="cb3-244"><a href="#cb3-244" tabindex="-1"></a>nombres_genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(results)[<span class="fu">order</span>(results<span class="sc">$</span>FDR)]</span>
+<span id="cb3-245"><a href="#cb3-245" tabindex="-1"></a></span>
+<span id="cb3-246"><a href="#cb3-246" tabindex="-1"></a><span class="co"># 3. Recortamos la matriz: Nos quedamos solo con las filas de esos genes top</span></span>
+<span id="cb3-247"><a href="#cb3-247" tabindex="-1"></a>matriz_heatmap <span class="ot">&lt;-</span> logCPM[nombres_genes, ]</span>
+<span id="cb3-248"><a href="#cb3-248" tabindex="-1"></a></span>
+<span id="cb3-249"><a href="#cb3-249" tabindex="-1"></a><span class="co"># 4. Crear la tabla de anotaciones (la leyenda de las columnas)</span></span>
+<span id="cb3-250"><a href="#cb3-250" tabindex="-1"></a><span class="co"># Asegúrate de que &#39;qlf$samples$group&#39; existe. Si no, usa tu vector de grupos original.</span></span>
+<span id="cb3-251"><a href="#cb3-251" tabindex="-1"></a>anotaciones_muestras <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Grupo =</span> y<span class="sc">$</span>samples<span class="sc">$</span>group, <span class="at">Sexo =</span> sample_info<span class="sc">$</span>Sexo,</span>
+<span id="cb3-252"><a href="#cb3-252" tabindex="-1"></a>                                   <span class="at">Edad =</span> sample_info<span class="sc">$</span>Edad)</span>
+<span id="cb3-253"><a href="#cb3-253" tabindex="-1"></a></span>
+<span id="cb3-254"><a href="#cb3-254" tabindex="-1"></a><span class="co"># Importante: Los nombres de fila de esta tabla deben coincidir con las columnas del heatmap</span></span>
+<span id="cb3-255"><a href="#cb3-255" tabindex="-1"></a><span class="fu">rownames</span>(anotaciones_muestras) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(matriz_heatmap)</span>
+<span id="cb3-256"><a href="#cb3-256" tabindex="-1"></a></span>
+<span id="cb3-257"><a href="#cb3-257" tabindex="-1"></a><span class="co"># 5. Definir colores bonitos para los grupos</span></span>
+<span id="cb3-258"><a href="#cb3-258" tabindex="-1"></a>colores_anotacion <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-259"><a href="#cb3-259" tabindex="-1"></a>  <span class="at">Grupo =</span> <span class="fu">c</span>(<span class="at">Normopeso =</span> <span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;Sobrepeso/Obeso2&quot;</span> <span class="ot">=</span> <span class="st">&quot;coral1&quot;</span>),</span>
+<span id="cb3-260"><a href="#cb3-260" tabindex="-1"></a>  <span class="at">Sexo =</span> <span class="fu">c</span>(<span class="at">Masculino =</span> <span class="st">&quot;royalblue1&quot;</span>, <span class="at">Femenino =</span> <span class="st">&quot;plum1&quot;</span>),</span>
+<span id="cb3-261"><a href="#cb3-261" tabindex="-1"></a>  <span class="at">Edad =</span> <span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;gold&quot;</span>, <span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb3-262"><a href="#cb3-262" tabindex="-1"></a>)</span>
+<span id="cb3-263"><a href="#cb3-263" tabindex="-1"></a></span>
+<span id="cb3-264"><a href="#cb3-264" tabindex="-1"></a><span class="co"># 6. Pintar el Heatmap CON la barra de grupos</span></span>
+<span id="cb3-265"><a href="#cb3-265" tabindex="-1"></a><span class="fu">pheatmap</span>(matriz_heatmap,</span>
+<span id="cb3-266"><a href="#cb3-266" tabindex="-1"></a>         <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>,</span>
+<span id="cb3-267"><a href="#cb3-267" tabindex="-1"></a>         <span class="at">annotation_col =</span> anotaciones_muestras, <span class="co"># Añadimos la barra</span></span>
+<span id="cb3-268"><a href="#cb3-268" tabindex="-1"></a>         <span class="at">annotation_colors =</span> colores_anotacion, <span class="co"># Añadimos los colores</span></span>
+<span id="cb3-269"><a href="#cb3-269" tabindex="-1"></a>         <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-270"><a href="#cb3-270" tabindex="-1"></a>         <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-271"><a href="#cb3-271" tabindex="-1"></a>         <span class="at">cutree_rows =</span> <span class="dv">4</span>,  <span class="co"># Corta el árbol de genes en 2 bloques (Suben vs Bajan)</span></span>
+<span id="cb3-272"><a href="#cb3-272" tabindex="-1"></a>         <span class="at">cutree_cols =</span> <span class="dv">3</span>,</span>
+<span id="cb3-273"><a href="#cb3-273" tabindex="-1"></a>         <span class="at">clustering_method =</span> <span class="st">&quot;ward.D2&quot;</span>,</span>
+<span id="cb3-274"><a href="#cb3-274" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">&quot;Expresión génica: Normopeso vs Sobrepeso/Obeso tipo 2&quot;</span>,</span>
+<span id="cb3-275"><a href="#cb3-275" tabindex="-1"></a>         <span class="at">color =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;navy&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;firebrick3&quot;</span>))(<span class="dv">100</span>)</span>
+<span id="cb3-276"><a href="#cb3-276" tabindex="-1"></a>)</span>
 <span id="cb3-277"><a href="#cb3-277" tabindex="-1"></a></span>
 <span id="cb3-278"><a href="#cb3-278" tabindex="-1"></a></span>
-<span id="cb3-279"><a href="#cb3-279" tabindex="-1"></a><span class="co">#-------------------------------------------------------------------------------</span></span>
-<span id="cb3-280"><a href="#cb3-280" tabindex="-1"></a><span class="co">#-----------------------               BOXPLOTS              -------------------</span></span>
-<span id="cb3-281"><a href="#cb3-281" tabindex="-1"></a><span class="co">#-------------------------------------------------------------------------------</span></span>
-<span id="cb3-282"><a href="#cb3-282" tabindex="-1"></a></span>
-<span id="cb3-283"><a href="#cb3-283" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-284"><a href="#cb3-284" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
-<span id="cb3-285"><a href="#cb3-285" tabindex="-1"></a></span>
+<span id="cb3-279"><a href="#cb3-279" tabindex="-1"></a></span>
+<span id="cb3-280"><a href="#cb3-280" tabindex="-1"></a><span class="co">#-------------------------------------------------------------------------------</span></span>
+<span id="cb3-281"><a href="#cb3-281" tabindex="-1"></a><span class="co">#-----------------------               BOXPLOTS              -------------------</span></span>
+<span id="cb3-282"><a href="#cb3-282" tabindex="-1"></a><span class="co">#-------------------------------------------------------------------------------</span></span>
+<span id="cb3-283"><a href="#cb3-283" tabindex="-1"></a></span>
+<span id="cb3-284"><a href="#cb3-284" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-285"><a href="#cb3-285" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
 <span id="cb3-286"><a href="#cb3-286" tabindex="-1"></a></span>
-<span id="cb3-287"><a href="#cb3-287" tabindex="-1"></a><span class="co"># 1. Seleccionamos los genes que queremos pintar</span></span>
-<span id="cb3-288"><a href="#cb3-288" tabindex="-1"></a><span class="co"># Opción A: Los 6 más significativos automáticamente</span></span>
-<span id="cb3-289"><a href="#cb3-289" tabindex="-1"></a></span>
+<span id="cb3-287"><a href="#cb3-287" tabindex="-1"></a></span>
+<span id="cb3-288"><a href="#cb3-288" tabindex="-1"></a><span class="co"># 1. Seleccionamos los genes que queremos pintar</span></span>
+<span id="cb3-289"><a href="#cb3-289" tabindex="-1"></a><span class="co"># Opción A: Los 6 más significativos automáticamente</span></span>
 <span id="cb3-290"><a href="#cb3-290" tabindex="-1"></a></span>
-<span id="cb3-291"><a href="#cb3-291" tabindex="-1"></a><span class="co"># Opción B: Tus favoritos manuales (si prefieres estos, descomenta la línea)</span></span>
-<span id="cb3-292"><a href="#cb3-292" tabindex="-1"></a><span class="co"># genes_a_pintar &lt;- c(&quot;FTO&quot;, &quot;LEP&quot;, &quot;INS&quot;, &quot;MC4R&quot;)</span></span>
-<span id="cb3-293"><a href="#cb3-293" tabindex="-1"></a></span>
-<span id="cb3-294"><a href="#cb3-294" tabindex="-1"></a><span class="co"># 2. Extraemos sus valores de expresión (logCPM)</span></span>
-<span id="cb3-295"><a href="#cb3-295" tabindex="-1"></a><span class="co"># Usamos t() para transponer: queremos que las columnas sean los genes</span></span>
-<span id="cb3-296"><a href="#cb3-296" tabindex="-1"></a>genes_boxplot <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">cpm</span>(y, <span class="at">log=</span><span class="cn">TRUE</span>)[<span class="fu">rownames</span>(results)[((results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">|</span> results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">&amp;</span></span>
-<span id="cb3-297"><a href="#cb3-297" tabindex="-1"></a>                                                         results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)], ])</span>
-<span id="cb3-298"><a href="#cb3-298" tabindex="-1"></a>genes_boxplot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(genes_boxplot)</span>
-<span id="cb3-299"><a href="#cb3-299" tabindex="-1"></a></span>
-<span id="cb3-300"><a href="#cb3-300" tabindex="-1"></a><span class="co"># 3. Añadimos la columna del Grupo</span></span>
-<span id="cb3-301"><a href="#cb3-301" tabindex="-1"></a><span class="co"># Asegúrate de que &#39;qlf$samples$group&#39; es donde tienes &quot;Normopeso/Sobrepeso&quot;</span></span>
-<span id="cb3-302"><a href="#cb3-302" tabindex="-1"></a>genes_boxplot<span class="sc">$</span>Grupo <span class="ot">&lt;-</span> y<span class="sc">$</span>samples<span class="sc">$</span>group</span>
-<span id="cb3-303"><a href="#cb3-303" tabindex="-1"></a></span>
-<span id="cb3-304"><a href="#cb3-304" tabindex="-1"></a><span class="co"># 4. Transformamos a formato largo</span></span>
-<span id="cb3-305"><a href="#cb3-305" tabindex="-1"></a><span class="co"># Esto crea una tabla con 3 columnas: Grupo, Gen, y LogCPM</span></span>
-<span id="cb3-306"><a href="#cb3-306" tabindex="-1"></a>datos_largos <span class="ot">&lt;-</span> <span class="fu">melt</span>(genes_boxplot, </span>
-<span id="cb3-307"><a href="#cb3-307" tabindex="-1"></a>                     <span class="at">id.vars =</span> <span class="st">&quot;Grupo&quot;</span>, </span>
-<span id="cb3-308"><a href="#cb3-308" tabindex="-1"></a>                     <span class="at">variable.name =</span> <span class="st">&quot;Gen&quot;</span>, </span>
-<span id="cb3-309"><a href="#cb3-309" tabindex="-1"></a>                     <span class="at">value.name =</span> <span class="st">&quot;LogCPM&quot;</span>)</span>
-<span id="cb3-310"><a href="#cb3-310" tabindex="-1"></a></span>
-<span id="cb3-311"><a href="#cb3-311" tabindex="-1"></a><span class="co"># Pequeña limpieza: asegurar que el Grupo es un factor (para los colores)</span></span>
-<span id="cb3-312"><a href="#cb3-312" tabindex="-1"></a>datos_largos<span class="sc">$</span>Grupo <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(datos_largos<span class="sc">$</span>Grupo)</span>
-<span id="cb3-313"><a href="#cb3-313" tabindex="-1"></a><span class="fu">ggplot</span>(datos_largos, <span class="fu">aes</span>(<span class="at">x =</span> Grupo, <span class="at">y =</span> LogCPM, <span class="at">fill =</span> Grupo)) <span class="sc">+</span></span>
-<span id="cb3-314"><a href="#cb3-314" tabindex="-1"></a>  </span>
-<span id="cb3-315"><a href="#cb3-315" tabindex="-1"></a>  <span class="co"># 1. El diagrama de caja (sin outliers negros, porque pondremos los puntos reales)</span></span>
-<span id="cb3-316"><a href="#cb3-316" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> </span>
-<span id="cb3-317"><a href="#cb3-317" tabindex="-1"></a>  </span>
-<span id="cb3-318"><a href="#cb3-318" tabindex="-1"></a>  <span class="co"># 2. Los puntos individuales (Jitter)</span></span>
-<span id="cb3-319"><a href="#cb3-319" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), </span>
-<span id="cb3-320"><a href="#cb3-320" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">2</span>, </span>
-<span id="cb3-321"><a href="#cb3-321" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb3-322"><a href="#cb3-322" tabindex="-1"></a>  </span>
-<span id="cb3-323"><a href="#cb3-323" tabindex="-1"></a>  <span class="co"># 3. Dividir en una rejilla (un gráfico por gen)</span></span>
-<span id="cb3-324"><a href="#cb3-324" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Gen, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb3-325"><a href="#cb3-325" tabindex="-1"></a>  </span>
-<span id="cb3-326"><a href="#cb3-326" tabindex="-1"></a>  <span class="co"># 4. Colores personalizados (Iguales a tu Heatmap)</span></span>
-<span id="cb3-327"><a href="#cb3-327" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Normopeso&quot;</span> <span class="ot">=</span> <span class="st">&quot;lightgreen&quot;</span>, </span>
-<span id="cb3-328"><a href="#cb3-328" tabindex="-1"></a>                               <span class="st">&quot;Sobrepeso/Obeso2&quot;</span> <span class="ot">=</span> <span class="st">&quot;coral1&quot;</span>)) <span class="sc">+</span> <span class="co"># ¡Revisa tus nombres exactos!</span></span>
-<span id="cb3-329"><a href="#cb3-329" tabindex="-1"></a>  </span>
-<span id="cb3-330"><a href="#cb3-330" tabindex="-1"></a>  <span class="co"># 5. Estética limpia</span></span>
-<span id="cb3-331"><a href="#cb3-331" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-332"><a href="#cb3-332" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Expresión de genes diferencialmente significativos </span><span class="sc">\n</span><span class="st">con umbral FC &gt; 1 o FC &lt; -1&quot;</span>,</span>
-<span id="cb3-333"><a href="#cb3-333" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;LogCPM (Expresión)&quot;</span>,</span>
-<span id="cb3-334"><a href="#cb3-334" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
-<span id="cb3-335"><a href="#cb3-335" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, <span class="co"># Quitamos leyenda porque ya está en el eje X</span></span>
-<span id="cb3-336"><a href="#cb3-336" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>), <span class="co"># Títulos de los genes grandes</span></span>
-<span id="cb3-337"><a href="#cb3-337" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))   <span class="co"># Inclinar texto eje X si es largo</span></span></code></pre></div>
-</div>
+<span id="cb3-291"><a href="#cb3-291" tabindex="-1"></a></span>
+<span id="cb3-292"><a href="#cb3-292" tabindex="-1"></a><span class="co"># Opción B: Tus favoritos manuales (si prefieres estos, descomenta la línea)</span></span>
+<span id="cb3-293"><a href="#cb3-293" tabindex="-1"></a><span class="co"># genes_a_pintar &lt;- c(&quot;FTO&quot;, &quot;LEP&quot;, &quot;INS&quot;, &quot;MC4R&quot;)</span></span>
+<span id="cb3-294"><a href="#cb3-294" tabindex="-1"></a></span>
+<span id="cb3-295"><a href="#cb3-295" tabindex="-1"></a><span class="co"># 2. Extraemos sus valores de expresión (logCPM)</span></span>
+<span id="cb3-296"><a href="#cb3-296" tabindex="-1"></a><span class="co"># Usamos t() para transponer: queremos que las columnas sean los genes</span></span>
+<span id="cb3-297"><a href="#cb3-297" tabindex="-1"></a>genes_boxplot <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">cpm</span>(y, <span class="at">log=</span><span class="cn">TRUE</span>)[<span class="fu">rownames</span>(results)[((results<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">|</span> results<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">&amp;</span></span>
+<span id="cb3-298"><a href="#cb3-298" tabindex="-1"></a>                                                         results<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span>)], ])</span>
+<span id="cb3-299"><a href="#cb3-299" tabindex="-1"></a>genes_boxplot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(genes_boxplot)</span>
+<span id="cb3-300"><a href="#cb3-300" tabindex="-1"></a></span>
+<span id="cb3-301"><a href="#cb3-301" tabindex="-1"></a><span class="co"># 3. Añadimos la columna del Grupo</span></span>
+<span id="cb3-302"><a href="#cb3-302" tabindex="-1"></a><span class="co"># Asegúrate de que &#39;qlf$samples$group&#39; es donde tienes &quot;Normopeso/Sobrepeso&quot;</span></span>
+<span id="cb3-303"><a href="#cb3-303" tabindex="-1"></a>genes_boxplot<span class="sc">$</span>Grupo <span class="ot">&lt;-</span> y<span class="sc">$</span>samples<span class="sc">$</span>group</span>
+<span id="cb3-304"><a href="#cb3-304" tabindex="-1"></a></span>
+<span id="cb3-305"><a href="#cb3-305" tabindex="-1"></a><span class="co"># 4. Transformamos a formato largo</span></span>
+<span id="cb3-306"><a href="#cb3-306" tabindex="-1"></a><span class="co"># Esto crea una tabla con 3 columnas: Grupo, Gen, y LogCPM</span></span>
+<span id="cb3-307"><a href="#cb3-307" tabindex="-1"></a>datos_largos <span class="ot">&lt;-</span> <span class="fu">melt</span>(genes_boxplot, </span>
+<span id="cb3-308"><a href="#cb3-308" tabindex="-1"></a>                     <span class="at">id.vars =</span> <span class="st">&quot;Grupo&quot;</span>, </span>
+<span id="cb3-309"><a href="#cb3-309" tabindex="-1"></a>                     <span class="at">variable.name =</span> <span class="st">&quot;Gen&quot;</span>, </span>
+<span id="cb3-310"><a href="#cb3-310" tabindex="-1"></a>                     <span class="at">value.name =</span> <span class="st">&quot;LogCPM&quot;</span>)</span>
+<span id="cb3-311"><a href="#cb3-311" tabindex="-1"></a></span>
+<span id="cb3-312"><a href="#cb3-312" tabindex="-1"></a><span class="co"># Pequeña limpieza: asegurar que el Grupo es un factor (para los colores)</span></span>
+<span id="cb3-313"><a href="#cb3-313" tabindex="-1"></a>datos_largos<span class="sc">$</span>Grupo <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(datos_largos<span class="sc">$</span>Grupo)</span>
+<span id="cb3-314"><a href="#cb3-314" tabindex="-1"></a><span class="fu">ggplot</span>(datos_largos, <span class="fu">aes</span>(<span class="at">x =</span> Grupo, <span class="at">y =</span> LogCPM, <span class="at">fill =</span> Grupo)) <span class="sc">+</span></span>
+<span id="cb3-315"><a href="#cb3-315" tabindex="-1"></a>  </span>
+<span id="cb3-316"><a href="#cb3-316" tabindex="-1"></a>  <span class="co"># 1. El diagrama de caja (sin outliers negros, porque pondremos los puntos reales)</span></span>
+<span id="cb3-317"><a href="#cb3-317" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> </span>
+<span id="cb3-318"><a href="#cb3-318" tabindex="-1"></a>  </span>
+<span id="cb3-319"><a href="#cb3-319" tabindex="-1"></a>  <span class="co"># 2. Los puntos individuales (Jitter)</span></span>
+<span id="cb3-320"><a href="#cb3-320" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), </span>
+<span id="cb3-321"><a href="#cb3-321" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb3-322"><a href="#cb3-322" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb3-323"><a href="#cb3-323" tabindex="-1"></a>  </span>
+<span id="cb3-324"><a href="#cb3-324" tabindex="-1"></a>  <span class="co"># 3. Dividir en una rejilla (un gráfico por gen)</span></span>
+<span id="cb3-325"><a href="#cb3-325" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Gen, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb3-326"><a href="#cb3-326" tabindex="-1"></a>  </span>
+<span id="cb3-327"><a href="#cb3-327" tabindex="-1"></a>  <span class="co"># 4. Colores personalizados (Iguales a tu Heatmap)</span></span>
+<span id="cb3-328"><a href="#cb3-328" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Normopeso&quot;</span> <span class="ot">=</span> <span class="st">&quot;lightgreen&quot;</span>, </span>
+<span id="cb3-329"><a href="#cb3-329" tabindex="-1"></a>                               <span class="st">&quot;Sobrepeso/Obeso2&quot;</span> <span class="ot">=</span> <span class="st">&quot;coral1&quot;</span>)) <span class="sc">+</span> <span class="co"># ¡Revisa tus nombres exactos!</span></span>
+<span id="cb3-330"><a href="#cb3-330" tabindex="-1"></a>  </span>
+<span id="cb3-331"><a href="#cb3-331" tabindex="-1"></a>  <span class="co"># 5. Estética limpia</span></span>
+<span id="cb3-332"><a href="#cb3-332" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-333"><a href="#cb3-333" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Expresión de genes diferencialmente significativos </span><span class="sc">\n</span><span class="st">con umbral FC &gt; 1 o FC &lt; -1&quot;</span>,</span>
+<span id="cb3-334"><a href="#cb3-334" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;LogCPM (Expresión)&quot;</span>,</span>
+<span id="cb3-335"><a href="#cb3-335" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-336"><a href="#cb3-336" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, <span class="co"># Quitamos leyenda porque ya está en el eje X</span></span>
+<span id="cb3-337"><a href="#cb3-337" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>), <span class="co"># Títulos de los genes grandes</span></span>
+<span id="cb3-338"><a href="#cb3-338" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))   <span class="co"># Inclinar texto eje X si es largo</span></span></code></pre></div>
 </div>
 <div id="interpretación-de-los-resultados" class="section level3">
 <h3>Interpretación de los resultados</h3>
@@ -1202,6 +1208,132 @@ análisis de expresión diferencial en R</strong>
 </div>
 <p>-&gt; interpretación del heatmap</p>
 </div>
+</div>
+<div id="análisis-de-enriquecimiento-funcional-de-los-genes-diferencialmente-expresados" class="section level2">
+<h2>Análisis de enriquecimiento funcional de los genes diferencialmente
+expresados</h2>
+<p>El enriquecimiento funcional es la técnica que permite dar un
+contexto biológico a la lista de genes diferencialmente expresados que
+hemos obtenido, agrupándolos según las funciones o rutas en las que
+participan. Gracias a este análisis, podemos ver si hay procesos
+biológicos o vías de señalización que están estadísticamente
+sobrerrepresentadas, lo que nos ayuda a entender qué está ocurriendo
+realmente a nivel molecular en las muestras.</p>
+<p>Para ello, se parte de los resultados obtenidos con EdgeR para los
+genes diferencialmente expresados con un <span class="math inline">\(FDR&lt;0.05\)</span> y con un cambio de expresión
+relevante (<span class="math inline">\(FC}≥1\)</span>). Se utilizó la
+librería <code>gprofiler2</code> a través de internet, cruzando los
+genes con bases de datos clave:</p>
+<ul>
+<li><p><a href="GO:BP" class="uri">GO:BP</a> -&gt; Gene Ontology
+(Biological Process)</p></li>
+<li><p>KEGG -&gt; Kyoto Encyclopedia of Genes and Genomes</p></li>
+<li><p>Reactome -&gt; Reactome pathway database</p></li>
+<li><p>WP -&gt; WikiPathways</p></li>
+<li><p>HPA -&gt; Human Protein Athlas</p></li>
+<li><p>HP -&gt; Human Phenotype ontology</p></li>
+</ul>
+<p>Con <code>gprofiler2</code> se obtiene un gráfico interactivo que
+indica las rutas metabólicas o funciones en las que están implicados los
+genes proporcionados como entrada, clasificadas por la base de datos de
+la que se han obtenido.</p>
+<p>Para ver en detalle de todos los términos enriquecidos, puedes
+consultar el <a href="EnriquecimientoPlot.html" target="_blank">gráfico
+interactivo completo aquí</a>.</p>
+<p>Así mismo, hemos generado una tabla interactiva creada con el paquete
+<code>reactable</code> que presenta de forma detallada los resultados
+estadísticos del enriquecimiento. La tabla estructura la información en
+cinco columnas: la Base de Datos de origen de la salida, el
+identificador (ID) y la descripción del término biológico, el P-Value
+ajustado y el Nº de Genes (intersection size), que indica cuántos genes
+de los diferencialmente expresados están involucrados en ese proceso
+específico.</p>
+<p>Una herramienta útil en la visualización de esta tabla interactiva es
+el ordenamiento interactivo: al hacer clic sobre el encabezado de
+cualquiera de las columnas, los datos se reorganizan. Por ejemplo,
+pinchando sobre “P-Value Adj”, se puede reordenar los términos de mayor
+a menor significancia (ascendente o descendente), lo mismo ocurre con el
+“Nº de Genes” si queremos priorizar las rutas con más hits. Además, la
+tabla incluye un buscador integrado para localizar términos concretos,
+paginación y un resaltado visual (highlight) que marca la fila sobre la
+que se sitúa el ratón, facilitando el seguimiento de la lectura.</p>
+<p>Para ver el detalle de todos los términos enriquecidos, puedes
+consultar la <a href="tablaEnriquecimiento.html" target="_blank">tabla
+interactiva completa aquí</a>.</p>
+<details>
+<summary>
+👈🏼 <strong>Click aquí para ver el código completo del Pipeline del
+análisis de enriquecimiento funcional en R</strong>
+</summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#--------------------------------- Enriquecimiento ------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># Autora: Virginia Garcia-Loygorri</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="do">#########################       Enriquecimiento       ##############################</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Carga de datos de edgeR para tratar con ellos</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>genes_DEG <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;../Expresion_diferencial/EdgeR/degFDR.rds&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># Cargamos librerias para enriquecimiento ! Con acceso a internet</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="fu">library</span>(gprofiler2)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>gost_data <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> <span class="fu">list</span>(<span class="st">&quot; &quot;</span> <span class="ot">=</span> <span class="fu">row.names</span>(genes_DEG[genes_DEG<span class="sc">$</span>FDR <span class="sc">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                                                         <span class="sc">&amp;</span> <span class="fu">abs</span>(genes_DEG<span class="sc">$</span>logFC) <span class="sc">&gt;=</span> <span class="dv">1</span>, ])), </span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                 <span class="at">organism =</span> <span class="st">&quot;hsapiens&quot;</span>, </span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>                 <span class="at">ordered_query =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>                 <span class="at">correction_method =</span> <span class="st">&quot;fdr&quot;</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>                 <span class="at">sources =</span> <span class="fu">c</span>(<span class="st">&quot;GO:BP&quot;</span>, <span class="st">&quot;KEGG&quot;</span>, <span class="st">&quot;REAC&quot;</span>, <span class="st">&quot;WP&quot;</span>, <span class="st">&quot;HPA&quot;</span>, <span class="st">&quot;HP&quot;</span>),</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>                 <span class="at">significant =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co"># Generar el plot interactivo</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>p_interactivo <span class="ot">&lt;-</span> <span class="fu">gostplot</span>(gost_data, <span class="at">interactive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co"># Personalizacion del plot</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="fu">layout</span>(p_interactivo,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">Análisis de enriquecimiento funcional de los genes expresados diferencialmente&quot;</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>       <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">&quot;Bases de Datos&quot;</span>))</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="do">#########################       Tabla de enrich       ##############################</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>gost_table <span class="ot">&lt;-</span> gost_data<span class="sc">$</span>result[, <span class="fu">c</span>(<span class="st">&quot;source&quot;</span>, <span class="st">&quot;term_id&quot;</span>, <span class="st">&quot;term_name&quot;</span>, <span class="st">&quot;p_value&quot;</span>, <span class="st">&quot;intersection_size&quot;</span>)]</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#Cogemos los valores del enriquecimiento de gost que nos interesan</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">library</span>(reactable) <span class="co">#libreria para tabla interactiva</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="fu">reactable</span>(</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  gost_table,</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>    <span class="at">source =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;Base de Datos&quot;</span>, <span class="at">width =</span> <span class="dv">100</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>),</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>    <span class="at">term_id =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;ID&quot;</span>, <span class="at">width =</span> <span class="dv">120</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>),</span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>    <span class="at">term_name =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;Descripción del Término&quot;</span>, <span class="at">minWidth =</span> <span class="dv">200</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>),</span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;P-Value Adj&quot;</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>, <span class="at">cell =</span> <span class="cf">function</span>(value) {</span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>      <span class="fu">formatC</span>(value, <span class="at">format =</span> <span class="st">&quot;e&quot;</span>, <span class="at">digits =</span> <span class="dv">3</span>) }</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>      ),</span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>    <span class="at">intersection_size =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;Nº Genes&quot;</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>)</span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>    ),</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>  <span class="at">pagination =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>  <span class="at">showPagination =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>  <span class="at">showPageInfo =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>  <span class="at">sortable =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>  <span class="at">searchable =</span> <span class="cn">TRUE</span>,      <span class="co"># Barra de búsqueda</span></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>  <span class="at">striped =</span> <span class="cn">TRUE</span>,         <span class="co"># Filas a rayas</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>  <span class="at">highlight =</span> <span class="cn">TRUE</span>,       <span class="co"># Resalta al pasar el ratón</span></span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>  <span class="at">bordered =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>  <span class="at">defaultPageSize =</span> <span class="dv">15</span>,   <span class="co"># Paginación</span></span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>  <span class="at">theme =</span> <span class="fu">reactableTheme</span>(</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(<span class="at">fontFamily =</span> <span class="st">&quot;Helvetica, sans_serif&quot;</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>    <span class="at">fontSize =</span> <span class="st">&quot;14px&quot;</span>),</span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>    <span class="at">borderColor =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>    <span class="at">stripedColor =</span> <span class="st">&quot;#D5DBDE&quot;</span>,</span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>    <span class="at">highlightColor =</span> <span class="st">&quot;#C4E4F5&quot;</span>,</span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>    <span class="at">cellPadding =</span> <span class="st">&quot;8px 12px&quot;</span>,</span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>    <span class="at">headerStyle =</span> <span class="fu">list</span>(</span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>      <span class="at">fontWeight =</span> <span class="st">&quot;bold&quot;</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>      <span class="at">backgroundColor =</span> <span class="st">&quot;#f0f0f0&quot;</span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>    )</span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a>  )</span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 </div>
 

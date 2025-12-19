@@ -1,14 +1,26 @@
 ########## Analisis diferencial de expresion RNAseq con EdgeR ############
 #Autora: Virginia Garcia-Loygorri
 
-# Salmon’s main output is its quantification file. This file is a plain-text, tab-separated file with a single header line (which names all of the columns). This file is named quant.sf and appears at the top-level of Salmon’s output directory. The columns appear in the following order:
-#         Name, Length, EffectiveLength, TPM, NumReads
-# Each subsequent row describes a single quantification record. The columns have the following interpretation.
-  # Name — This is the name of the target transcript provided in the input transcript database (FASTA file).
+# Salmon’s main output is its quantification file. This file is a plain-text, tab-separated file with
+# a single header line (which names all of the columns). This file is named quant.sf and appears at
+# the top-level of Salmon’s output directory. The columns appear in the following order:
+# Name, Length, EffectiveLength, TPM, NumReads
+
+# Each subsequent row describes a single quantification record. The columns have the following
+# interpretation.
+  # Name — This is the name of the target transcript provided in the input database (FASTA file).
   # Length — This is the length of the target transcript in nucleotides.
-  # EffectiveLength — This is the computed effective length of the target transcript. It takes into account all factors being modeled that will effect the probability of sampling fragments from this transcript, including the fragment length distribution and sequence-specific and gc-fragment bias (if they are being modeled).
-  # TPM — This is salmon’s estimate of the relative abundance of this transcript in units of Transcripts Per Million (TPM). TPM is the recommended relative abundance measure to use for downstream analysis.
-  # NumReads — This is salmon’s estimate of the number of reads mapping to each transcript that was quantified. It is an “estimate” insofar as it is the expected number of reads that have originated from each transcript given the structure of the uniquely mapping and multi-mapping reads and the relative abundance estimates for each transcript.
+  # EffectiveLength — This is the computed effective length of the target transcript. It takes into
+  # account all factors being modeled that will effect the probability of sampling fragments from
+  # this transcript, including the fragment length distribution and sequence-specific and gc-fragment
+  # bias (if they are being modeled).
+  # TPM — This is salmon’s estimate of the relative abundance of this transcript in units of
+  # Transcripts Per Million (TPM). TPM is the recommended relative abundance measure to use for
+  # downstream analysis.
+  # NumReads — This is salmon’s estimate of the number of reads mapping to each transcript that was
+  # quantified. It is an “estimate” insofar as it is the expected number of reads that have
+  # originated from each transcript given the structure of the uniquely mapping and multi-mapping
+  # reads and the relative abundance estimates for each transcript.
 
 # Lo primero que hay que hacer es instalar EdgeR si no lo tenemos instalado
 BiocManager::install("edgeR")
@@ -24,17 +36,22 @@ library(readr)
 
 # Cargamos el diseño experimental y la traducción de los transcritos a genes
 sample_info <- read.csv("Design.csv") #sirve para construir rutas a los resultados
-tx2gene <- read_tsv("Transcrito_a_Gen.tsv", col_names = FALSE) #lee el tsv indicando que el archivo no tiene cabecera
-# este paso es esencial porque salmon quantifica a nivel de transcrio pero los analisis bio se hacen a nivel de gen, es el puente ente transcriptomica y genomica
+tx2gene <- read_tsv("Transcrito_a_Gen.tsv", col_names = FALSE) 
+#lee el tsv indicando que el archivo no tiene cabecera
+# este paso es esencial porque salmon quantifica a nivel de transcrio pero los analisis bio se hacen
+# a nivel de gen, es el puente ente transcriptomica y genomica
 # tx to gene (tx2gene) transcript to gene
-colnames(tx2gene) <- c("TXNAME", "GENEID") # asigna nombres  por convencion, a las dos columnas de tx2gene con txname y geneid, sirve para que tximport pueda utilizarlo
-# ya que necesita la primera columna de IDs de transcritos y la segunda de IDs de genes
+colnames(tx2gene) <- c("TXNAME", "GENEID") 
+# asigna nombres  por convencion, a las dos columnas de tx2gene con txname y geneid, sirve para que
+# tximport pueda utilizarlo ya que necesita la primera columna de IDs de transcritos y la segunda de
+# IDs de genes
 
 # Definimos rutas a los ficheros de cuantificacion de Salmon
 files <- file.path("quant_results", paste0(sample_info$Sample, "_quant"), "quant.sf") 
 names(files) <- sample_info$Sample
 
-# Leemos los datos de expresión con tximport, ojo, en design.csv hay que tener solo los que necesitamos o tximport fallara
+# Leemos los datos de expresión con tximport, ojo, en design.csv hay que tener solo los que
+# necesitamos o tximport fallara
 txi <- tximport(files, type = "salmon", tx2gene = tx2gene)
 
 # Exploración de la matriz
@@ -64,18 +81,22 @@ y <- DGEList(counts=counts,group=group) # es el nucleo de edgeR aqui se guardan 
 # Normalizacion de los datos
 # ---------------------------------------
 y <- calcNormFactors(y)
-# utilizamos esta funcion porque lo que queremos comparar es la expresion de cada gen entre diferentes muestras
-# tenemos que normalizar porque EdgeR no lo hace:
-# corregimos los datos para que las diferencias entre muestras reflejen verdaderos camnios biologicos y no por problemas tecnicos:
+# utilizamos esta funcion porque lo que queremos comparar es la expresion de cada gen entre
+# diferentes muestras. Tenemos que normalizar porque EdgeR no lo hace.
+# Corregimos los datos para que las diferencias entre muestras reflejen verdaderos camnios biologicos
+# y no por problemas tecnicos:
 # En RNAseq cada muestra puede variar porque:
     # 1. tamaño de libreria: algunas muestras tienen mas lecturas que otras
-    # 2. sesgo de composicion, si unos genes estan super expresados, los genes bajos aprece que tengan demasiado poco
-    # 3. otros factores: diferencuas de preparacion de libreria, eficiencia de secuenciacion, batch effects
+    # 2. sesgo de composicion, si unos genes estan super expresados, los genes bajos aprece que
+        # tengan demasiado poco
+    # 3. otros factores: diferencuas de preparacion de libreria, eficiencia de secuenciacion,
+    # batch effects
 
 # ---------------------------------------
 # Definir el diseño estadistico: que vamos a comparar contra que
 # ---------------------------------------
-design <- model.matrix(~group) # esto modela expresion vs muestra, aqui se decide que comparacion biologica hacemos
+design <- model.matrix(~group) 
+# esto modela expresion vs muestra, aqui se decide que comparacion biologica hacemos
 
 
 # ---------------------------------------
@@ -88,14 +109,17 @@ y <- estimateDisp(y, design)
 # Ajustar el modelo y test estadistico
 # ---------------------------------------
 fit <- glmQLFit(y, design) 
-qlf <- glmQLFTest(fit, coef = 2) # glmQFTestcompara los levels por la columna 2 (coef=2) es decir: Normopeso sera la base y vera si los genes se sobreexpresan o no en Sobrepeso
+qlf <- glmQLFTest(fit, coef = 2) 
+# glmQFTestcompara los levels por la columna 2 (coef=2) es decir:
+# Normopeso sera la base y vera si los genes se sobreexpresan o no en Sobrepeso
 
 # Guardamos todos los genes
 results <- topTags(qlf, n = Inf)$table
- # -> logFC es el cambio de expr -- Positivo → mas expresado en la condicion de interes. Negativo → menos expresado
+ # -> logFC es el cambio de expr
+    #-- Positivo → mas expresado en la condicion de interes. Negativo → menos expresado
  # -> pvalue es la significacion
- # -> FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos entre los genes significativos (Es un pval corregido)
-    # FDR < 0.05 es el estandar cientifico
+ # -> FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos entre
+    # los genes significativos (Es un pval corregido). FDR < 0.05 es el estandar cientifico
 
 deg <- results[results$FDR < 0.05 & abs(results$logFC) > 1, ]
 degFDR <- results[results$FDR < 0.05, ]
@@ -175,7 +199,8 @@ names(keyvals)[which(results$logFC > 1 & results$FDR < 0.05)] <- 'Sobreexpresado
 keyvals[which(results$logFC < -1 & results$FDR < 0.05)] <- 'blue'
 names(keyvals)[which(results$logFC < -1 & results$FDR < 0.05)] <- 'Infraexpresados'
 
-genes_significativos <- rownames(results)[which(names(keyvals) %in% c('Sobreexpresados', 'Infraexpresados'))]
+genes_significativos <- rownames(results)[which(names(keyvals) %in%
+                                                  c('Sobreexpresados', 'Infraexpresados'))]
 genes_limite <- rownames(results)[which(results$FDR < 0.05)]
 
 EnhancedVolcano(results,
@@ -185,7 +210,7 @@ EnhancedVolcano(results,
                 y = "FDR",
                 ylim = c(-0.5, 7),
                 xlim = c(-3, 3),
-                selectLab = unique(c(genes_significativos, genes_limite)), # Etiquetar solo los significativos
+                selectLab = unique(c(genes_significativos, genes_limite)), # Solo los significativos
                 xlab = bquote(~Log[2]~ 'fold change'),
                 ylab = bquote(~-Log[10]~ "FDR"),
                 pCutoff = 0.05,
@@ -222,7 +247,8 @@ matriz_heatmap <- logCPM[nombres_genes, ]
 
 # 4. Crear la tabla de anotaciones (la leyenda de las columnas)
 # Asegúrate de que 'qlf$samples$group' existe. Si no, usa tu vector de grupos original.
-anotaciones_muestras <- data.frame(Grupo = y$samples$group, Sexo = sample_info$Sexo, Edad = sample_info$Edad)
+anotaciones_muestras <- data.frame(Grupo = y$samples$group, Sexo = sample_info$Sexo,
+                                   Edad = sample_info$Edad)
 
 # Importante: Los nombres de fila de esta tabla deben coincidir con las columnas del heatmap
 rownames(anotaciones_muestras) <- colnames(matriz_heatmap)
@@ -267,7 +293,8 @@ library(reshape2)
 
 # 2. Extraemos sus valores de expresión (logCPM)
 # Usamos t() para transponer: queremos que las columnas sean los genes
-genes_boxplot <- t(cpm(y, log=TRUE)[rownames(results)[((results$logFC > 1 | results$logFC < -1) & results$FDR < 0.05)], ])
+genes_boxplot <- t(cpm(y, log=TRUE)[rownames(results)[((results$logFC > 1 | results$logFC < -1)
+                                                       & results$FDR < 0.05)], ])
 genes_boxplot <- as.data.frame(genes_boxplot)
 
 # 3. Añadimos la columna del Grupo
@@ -302,9 +329,13 @@ ggplot(datos_largos, aes(x = Grupo, y = LogCPM, fill = Grupo)) +
   
   # 5. Estética limpia
   theme_minimal() +
-  labs(title = "Expresión de genes diferencialmente significativos \ncon umbral LogFoldChange > 1 o LogFoldChange < -1",
+  labs(title = "Expresión de genes diferencialmente significativos \ncon umbral FC > 1 o FC < -1",
        y = "LogCPM (Expresión)",
        x = "") +
   theme(legend.position = "none", # Quitamos leyenda porque ya está en el eje X
         strip.text = element_text(face = "bold", size = 12), # Títulos de los genes grandes
         axis.text.x = element_text(angle = 45, hjust = 1))   # Inclinar texto eje X si es largo
+
+# Guardar las variables del entorno para utilizarlas en el enriquecimiento
+saveRDS(degFDR, file = "degFDR.rds")
+

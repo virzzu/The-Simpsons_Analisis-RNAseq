@@ -252,7 +252,7 @@ Se construyó el objeto `DGEList` con la matriz de conteos proporcionada por Sal
 Se consideraron como genes diferencialmente expresados (DEGs) aquellos que cumplían con el siguiente criterio: una tasa de falsos descubrimientos (un p valor ajustado) de $FDR < 0.05$ y un cambio en la expresión de $LogFoldChange > 1$ en valor absoluto, es decir, genes que al menos duplican o reducen a la mitad su expresión en el grupo Obeso tipo 2 respecto del grupo Normopeso.
 
 
-#### Visualización de los resultados
+### Visualización de los resultados
 
 La visualización global de los resultados se realizó mediante cuatro gráficos. Primero, un MA Plot generado por `plotMD()` que permite verificar la calidad de la normalización, mostrando una distribución equilibrada de la intensidad de señal. Segundo, se generó un Volcano Plot utilizando `EnhancedVolcano()`, que facilita la identificación rápida de los genes más relevantes biológica y estadísticamente (destacados en rojo y azul). Este gráfico permite etiquetar genes candidatos específicos que muestran una expresión diferencial significativa entre las condiciones de normopeso y sobrepeso tipo 2. Tercero, para examinar los patrones de expresión a nivel individual, se generó un mapa de calor construido con `pheatmap()` revelando agrupaciones de expresión por condición clínica. Finalmente, se generaron diagramas tipo *boxplot* para visualizar la distribución de los conteos (logCPM) de los genes con expresión génica significativa mostrado por tipo de condición.
 
@@ -345,8 +345,8 @@ y <- DGEList(counts=counts,group=group)
 y <- calcNormFactors(y)
 # utilizamos esta funcion porque lo que queremos comparar es la expresion de cada gen entre
 # diferentes muestras tenemos que normalizar porque EdgeR no lo hace:
-# corregimos los datos para que las diferencias entre muestras reflejen verdaderos camnios biologicos
-# y no por problemas tecnicos:
+# corregimos los datos para que las diferencias entre muestras reflejen verdaderos
+# cambios biologicos y no por problemas tecnicos:
 # En RNAseq cada muestra puede variar porque:
     # 1. tamaño de libreria: algunas muestras tienen mas lecturas que otras
     # 2. sesgo de composicion, si unos genes estan super expresados, los genes bajos aprece que 
@@ -365,23 +365,24 @@ design <- model.matrix(~group)
 # Estimar la dispersion
 # ---------------------------------------
 y <- estimateDisp(y, design)
-  # edgeR modela los conteos con una binomial negativa y estima dispersion comun y dispersion por gen
+  # edgeR modela los conteos con una binomial negativa y estima dispersion comun y 
+  # dispersion por gen
 
 # ---------------------------------------
 # Ajustar el modelo y test estadistico
 # ---------------------------------------
 fit <- glmQLFit(y, design) 
 qlf <- glmQLFTest(fit, coef = 2) 
-# glmQFTestcompara los levels por la columna 2 (coef=2) es decir: Normopeso sera la base y ver si
-# los genes se sobreexpresan o no en Sobrepeso
+# glmQFTestcompara los levels por la columna 2 (coef=2) es decir: Normopeso sera la base 
+# y ver si los genes se sobreexpresan o no en Sobrepeso
 
 # Guardamos todos los genes
 results <- topTags(qlf, n = Inf)$table
  # -> logFC es el cambio de expr 
     #-- Positivo → mas expresado en la condicion de interes. Negativo → menos expresado
  # -> pvalue es la significacion
- # -> FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos entre 
-    # los genes significativos (Es un pval corregido). FDR < 0.05 es el estandar cientifico
+ # -> FDR es lo que se reporta (false discovery rate) proporcion esperada de falsos positivos
+  # entre los genes significativos (Es un pval corregido). FDR < 0.05 es el estandar cientifico
 
 deg <- results[results$FDR < 0.05 & abs(results$logFC) > 1, ]
 degFDR <- results[results$FDR < 0.05, ]
@@ -472,7 +473,7 @@ EnhancedVolcano(results,
                 y = "FDR",
                 ylim = c(-0.5, 7),
                 xlim = c(-3, 3),
-                selectLab = unique(c(genes_significativos, genes_limite)), # Solo los significativos
+                selectLab = unique(c(genes_significativos, genes_limite)), # solo significativos
                 xlab = bquote(~Log[2]~ 'fold change'),
                 ylab = bquote(~-Log[10]~ "FDR"),
                 pCutoff = 0.05,
@@ -613,3 +614,110 @@ ggplot(datos_largos, aes(x = Grupo, y = LogCPM, fill = Grupo)) +
 ![Figura 3. HeatMap](img/HeatmapPlot.png)
 
   -> interpretación del heatmap
+  
+## Análisis de enriquecimiento funcional de los genes diferencialmente expresados
+
+El enriquecimiento funcional es la técnica que permite dar un contexto biológico a la lista de genes diferencialmente expresados que hemos obtenido, agrupándolos según las funciones o rutas en las que participan. Gracias a este análisis, podemos ver si hay procesos biológicos o vías de señalización que están estadísticamente sobrerrepresentadas, lo que nos ayuda a entender qué está ocurriendo realmente a nivel molecular en las muestras.
+
+Para ello, se parte de los resultados obtenidos con EdgeR para los genes diferencialmente expresados con un $FDR<0.05$ y con un cambio de expresión relevante ($FC}≥1$). Se utilizó la librería `gprofiler2` a través de internet, cruzando los genes con bases de datos clave: 
+
+* GO:BP -> Gene Ontology (Biological Process) 
+
+* KEGG -> Kyoto Encyclopedia of Genes and Genomes
+
+* Reactome -> Reactome pathway database
+
+* WP -> WikiPathways
+
+* HPA -> Human Protein Athlas
+
+* HP -> Human Phenotype ontology
+
+Con `gprofiler2` se obtiene un gráfico interactivo que indica las rutas metabólicas o funciones en las que están implicados los genes proporcionados como entrada, clasificadas por la base de datos de la que se han obtenido.
+
+Para ver en detalle de todos los términos enriquecidos, puedes consultar el
+<a href="EnriquecimientoPlot.html" target="_blank">gráfico interactivo completo aquí</a>.
+
+
+Así mismo, hemos generado una tabla interactiva creada con el paquete `reactable` que presenta de forma detallada los resultados estadísticos del enriquecimiento. La tabla estructura la información en cinco columnas: la Base de Datos de origen de la salida, el identificador (ID) y la descripción del término biológico, el P-Value ajustado y el Nº de Genes (intersection size), que indica cuántos genes de los diferencialmente expresados están involucrados en ese proceso específico.
+
+Una herramienta útil en la visualización de esta tabla interactiva es el ordenamiento interactivo: al hacer clic sobre el encabezado de cualquiera de las columnas, los datos se reorganizan. Por ejemplo, pinchando sobre "P-Value Adj", se puede reordenar los términos de mayor a menor significancia (ascendente o descendente), lo mismo ocurre con el "Nº de Genes" si queremos priorizar las rutas con más hits. Además, la tabla incluye un buscador integrado para localizar términos concretos, paginación y un resaltado visual (highlight) que marca la fila sobre la que se sitúa el ratón, facilitando el seguimiento de la lectura.
+
+Para ver el detalle de todos los términos enriquecidos, puedes consultar la 
+<a href="tablaEnriquecimiento.html" target="_blank">tabla interactiva completa aquí</a>.
+
+<details>
+<summary> 👈🏼 **Click aquí para ver el código completo del Pipeline del análisis de enriquecimiento funcional en R**</summary>
+```{r enriquecimiento, eval=FALSE}
+#--------------------------------- Enriquecimiento ------------------------------------
+# Autora: Virginia Garcia-Loygorri
+
+#########################       Enriquecimiento       ##############################
+# Carga de datos de edgeR para tratar con ellos
+genes_DEG <- readRDS("../Expresion_diferencial/EdgeR/degFDR.rds")
+
+# Cargamos librerias para enriquecimiento ! Con acceso a internet
+library(gprofiler2)
+library(plotly)
+
+
+gost_data <- gost(query = list(" " = row.names(genes_DEG[genes_DEG$FDR < 0.05
+                                                         & abs(genes_DEG$logFC) >= 1, ])), 
+                 organism = "hsapiens", 
+                 ordered_query = FALSE,
+                 correction_method = "fdr",
+                 sources = c("GO:BP", "KEGG", "REAC", "WP", "HPA", "HP"),
+                 significant = TRUE)
+
+# Generar el plot interactivo
+p_interactivo <- gostplot(gost_data, interactive = TRUE)
+
+# Personalizacion del plot
+layout(p_interactivo,
+       title = "\n\nAnálisis de enriquecimiento funcional de los genes expresados diferencialmente",
+       xaxis = list(title = "Bases de Datos"))
+
+
+#########################       Tabla de enrich       ##############################
+
+gost_table <- gost_data$result[, c("source", "term_id", "term_name", "p_value", "intersection_size")]
+#Cogemos los valores del enriquecimiento de gost que nos interesan
+
+library(reactable) #libreria para tabla interactiva
+
+reactable(
+  gost_table,
+  columns = list(
+    source = colDef(name = "Base de Datos", width = 100, align = "center"),
+    term_id = colDef(name = "ID", width = 120, align = "center"),
+    term_name = colDef(name = "Descripción del Término", minWidth = 200, align = "center"),
+    p_value = colDef(name = "P-Value Adj", align = "center", cell = function(value) {
+      formatC(value, format = "e", digits = 3) }
+      ),
+    intersection_size = colDef(name = "Nº Genes", align = "center")
+    ),
+  pagination = TRUE,
+  showPagination = TRUE,
+  showPageInfo = TRUE,
+  sortable = TRUE,
+  searchable = TRUE,      # Barra de búsqueda
+  striped = TRUE,         # Filas a rayas
+  highlight = TRUE,       # Resalta al pasar el ratón
+  bordered = TRUE,
+  defaultPageSize = 15,   # Paginación
+  theme = reactableTheme(
+    style = list(fontFamily = "Helvetica, sans_serif",
+    fontSize = "14px"),
+    borderColor = "black",
+    stripedColor = "#D5DBDE",
+    highlightColor = "#C4E4F5",
+    cellPadding = "8px 12px",
+    headerStyle = list(
+      fontWeight = "bold",
+      backgroundColor = "#f0f0f0"
+    )
+  )
+)
+```
+
+
