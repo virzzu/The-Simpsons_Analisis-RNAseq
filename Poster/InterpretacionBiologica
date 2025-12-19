@@ -1,12 +1,35 @@
 Tras un análisis de expresión diferencial, se han obtenido seis genes significativamente diferenciados. 
 La sobreexpresión de un gen se denota con un Log Fold Change positivo (logFC > 0), mientras que la infraexpresión se denota con un Log Fold Change negativo (logFC > 0).
 Los genes sobreexpresados son FTO (2,31), SIM1 (1.6), MC4R (1.49) y UBR2 (0.88). Los genes infraexpresados son BDNF (-0.76), CADM2 (-0.76), UHMK1 (-0.99), LEP (-1.05), NTRK2 (-1.96).
+
+Genes sobreexpresados:
 El gen FTO está fuertemente relacionado con la obesidad y desordenes metabólicos. FTO es una desmetilasa de m6A en RNA, por lo que su sobreexpresión puede alterar la regulación epitranscriptómica de mRNAs 
 relacionados con el apetito, la saciedad y la adipogénesis. (1)
 El gen SIM1 es clave en el desarrollo y la correcta función del núcleo paraventricular (PVN) del núcleo hipotálamico. Las alteraciones en este gen podrían alterar el PVN, generando anomalías en la regulación del apetito y el balance energético. (2)
-El gen MC4R (3)
+El gen MC4R (3) se ha identificado como causante de obesidad y sobrepeso. Este gen codifica para un receptos de melanocortina en neuronas secundarias, que integran señales de neuronas POMC y neuronas que segregan AgRP. En situaciones de ayuno, los bajos niveles de leptina activan neuronas que liberan AgRP; este se une a receptores MC4R en neuronas secundarias, que interpretan esta señal aumentando el apetito.  Una alteración en esta vía hipotalámica puede desequilibrar el apetito y la ingesta.
+El gen UBR2 codifica para una E3 ubiquitina ligasa. UBR2 se ha asociado a casos de obesidad y alteraciones metabólicas en estudios poblacionales de ancestralidad. (5)
+
+Genes infraexpresados:
+El gen BDNF es un factor neurotrófico esencial en la regulación de la formación y plasticidad de redes neuronales. Mutaciones en este gen o en su receptor TrkB resultan en obesidad, apetito insaciable y menor gasto energético. Su haploinsuficiencia se ha ligado a hiperfagia, trastornos metabólicos y otros deordenes neurológicos como el tumor de Wilm's, aniridia... (6)
+El gen NTRK2 cofica para el receptor TkrB, implicado en la regulación de la homeostasis energética. El impedimento de señalización, en este caso debido a una infraexpresión génica, puede estar relacionada con una pérdida o disminución de señalización celular, impidiendo la respuesta de las neuronas ante la secreción de BDNF. Esta alteración en la señalización hipotalámica puede contribuir a la hiperfagia y obesidad. (7)
+El gen CADM2 codifica para una proteina de adhesión en la membrana celular de las neuronas, que se encargan de mediar la sinapsis en el hipotálamo. Alteraciones en este gen se han relacionado con obesidad y desordenes metabólicos. (8)
+**** 
+To date, multiple SNPs in proximity to the CADM2 gene have now been shown to associate with both increased BMI and increased expression of CADM2 in several brain regions of human subjects thereby establishing its potential role in human obesity. Our observations using mouse models show reducing Cadm2 expression in Lepob/ob mice will reverse the hyperglycemia, insulin resistance, and adiposity and further underlines the relevance of studying the Cadm gene family in the context of metabolic diseases. 
+****
+El gen UHMK1 codifica para "U2AF homology motif kinase 1" o "KIS" (kinase interacting with stathmin), una serina/treonina kinasa. Este gen está ligado a la tasa metabólica basal (BMR). (9)
+El gen LEP codifica la hormona leptina. Esta hormona es clave en la regulación de la ingesta, masa corporal, crecimiento fetal, respuestas proinflamatorias, angiogénesis y lipogénesis. Esta hormona se genera en los adipocitos y se une a sus receptores en las hormonas del hipotálamo. La infraexpresión de LEP puede tener efectos análogos a los de la resistencia a la leptina: reducción de la saciedad, hiperfagia y ganancia de masa corporal. (10)
+
+
+
 
 Referencias:
 1. Zhao, X., Yang, Y., Sun, BF. et al. FTO and Obesity: Mechanisms of Association. Curr Diab Rep 14, 486 (2014). https://doi.org/10.1007/s11892-014-0486-0
 2. Ramachandrappa, S., Raimondo, A., Cali, A. M., Keogh, J. M., Henning, E., Saeed, S., Thompson, A., Garg, S., Bochukova, E. G., Brage, S., Trowse, V., Wheeler, E., Sullivan, A. E., Dattani, M., Clayton, P. E., Datta, V., Bruning, J. B., Wareham, N. J., O'Rahilly, S., Peet, D. J., … Farooqi, I. S. (2013). Rare variants in single-minded 1 (SIM1) are associated with severe obesity. The Journal of clinical investigation, 123(7), 3042–3050. https://doi.org/10.1172/JCI68016
 3. Cheraghi, S., Mobaderi, T., Mottaghi, A., Movahedi Motlagh, F., Taghizadeh, S., & Eghbali, M. (2025). Genetic variants in the MC4R gene and risk of obesity/overweight: A systematic review and meta-analysis. Diabetes, obesity & metabolism, 27(7), 3901–3920. https://doi.org/10.1111/dom.16425
+4. UBR2 protein expression summary - The Human Protein Atlas. (s. f.). https://www.proteinatlas.org/ENSG00000024048-UBR2
+5. Banerjee, D., Girirajan, S. Discovery of obesity genes through cross-ancestry analysis. Nat Commun 16, 9319 (2025). https://doi.org/10.1038/s41467-025-64933-7
+6. Pandit, M., Behl, T., Sachdeva, M., & Arora, S. (2020). Role of brain derived neurotropic factor in obesity. Obesity Medicine, 17, 100189. https://doi.org/10.1016/j.obmed.2020.100189
+7. Gray, J., Yeo, G., Hung, C., Keogh, J., Clayton, P., Banerjee, K., McAulay, A., O'Rahilly, S., & Farooqi, I. S. (2007). Functional characterization of human NTRK2 mutations identified in patients with severe early-onset obesity. International journal of obesity (2005), 31(2), 359–364. https://doi.org/10.1038/sj.ijo.0803390
+8. Yan, X., Wang, Z., Schmidt, V., Gauert, A., Willnow, T. E., Heinig, M., & Poy, M. N. (2017). Cadm2 regulates body weight and energy homeostasis in mice. Molecular Metabolism, 8, 180-188. https://doi.org/10.1016/j.molmet.2017.11.010
+9. Hellwege, J. N., Edwards, D. R. V., Acra, S., Chen, K., Buchowski, M. S., & Edwards, T. L. (2017). Association of gene coding variation and resting metabolic rate in a multi-ethnic sample of children and adults. BMC Obesity, 4(1), 12. https://doi.org/10.1186/s40608-017-0145-5
+10. Obradovic M, Sudar-Milovanovic E, Soskic S, Essack M, Arya S, Stewart AJ, Gojobori T, Isenovic ER. Leptin and Obesity: Role and Clinical Implication. Front Endocrinol (Lausanne). 2021 May 18;12:585887. doi: 10.3389/fendo.2021.585887. PMID: 34084149; PMCID: PMC8167040.
