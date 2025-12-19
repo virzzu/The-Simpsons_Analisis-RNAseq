@@ -1,0 +1,16 @@
+body {
+  background-image: url('https://wallpapers.com/images/hd/the-simpsons-1920-x-1080-background-60schu6yw4f5n18b.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-size: 1.8em;
+}
+
+div {
+  background-color: rgba(255, 255, 255, 0.65)   /* 55% opaque white */;
+  padding: 1em;
+}
+p {
+  text-align: justify;
+}
+

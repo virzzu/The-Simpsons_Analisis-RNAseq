@@ -1,5 +1,10 @@
 ---
 title: "Inicio"
+output: 
+  html_document: 
+    toc: false
+    highlight: tango
+    css: style.css
 ---
 ### Objetivos de aprendizaje
  * Realizar un análisis de calidad y alineamiento de lecturas RNA-seq.
@@ -7,3 +12,7 @@ title: "Inicio"
  * Identificar genes diferencialmente expresados entre grupos de individuos.
  * Interpretar perfiles de expresión en función del fenotipo o condición.
  * Representar los resultados en un póster científico.
+
+[Workflow del análisis](workflow.html)
+
+[RNASeq análisis](rnaseq_analysis.html)
