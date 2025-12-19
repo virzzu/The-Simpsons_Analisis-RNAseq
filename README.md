@@ -1,4 +1,4 @@
-# 🧬 Análisis de Expresión Diferencial RNA-seq: Obesidad en Los Simpson
+# 🧬 Análisis de Expresión Diferencial RNA-seq: Obesidad en personajes de Los Simpsons
 
 Este repositorio contiene el material y los resultados de la actividad práctica sobre **Análisis de Expresión Diferencial (RNA-seq)**. El objetivo del proyecto es identificar genes relacionados con la obesidad comparando perfiles simulados de diferentes personajes de *Los Simpson*.
 
@@ -26,7 +26,7 @@ Se han propuesto datos simulados de 8 muestras agrupadas en tres fenotipos metab
 A continuación se detalla la organización de los archivos:
 
 ```text
-.
+/
 ├── 📁 docs/                  # Documentos para generar GitHub pages
 │ 
 ├── 📁 RNAseq/                # Análisis RNAseq
@@ -37,7 +37,7 @@ A continuación se detalla la organización de los archivos:
 ├── 📁 Poster/                # Poster sobre el análisis y sus documentos
 │ 
 └── 📄 README.md               # Este archivo
-
+```
 
 Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages: [https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/][https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/]
 
