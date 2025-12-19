@@ -2,7 +2,9 @@
 
 Este repositorio contiene el material y los resultados de la actividad práctica sobre **Análisis de Expresión Diferencial (RNA-seq)**. El objetivo del proyecto es identificar genes relacionados con la obesidad comparando perfiles simulados de diferentes personajes de *Los Simpson*.
 
-Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages 👉🏼 https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/
+Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages
+
+👉🏼 https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/
 
 ## 🎯 Objetivos
 
