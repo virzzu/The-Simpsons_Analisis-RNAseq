@@ -10,4 +10,4 @@ output:
 
 Este es el flujo de trabajo del proyecto:
 
-![Workflow](img/workflow.png)
+![](img/workflow.png)
