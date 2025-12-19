@@ -30,7 +30,7 @@ A continuación se detalla la organización de los archivos:
 ├── 📁 docs/                  # Documentos para generar GitHub pages
 │ 
 ├── 📁 RNAseq/                # Análisis RNAseq
-│   ├── Calidad_y_cuantificacion/    # Scripts y resultados para cada paso
+│   ├── Calidad_y_cuantificacion/    # Scripts, datos y resultados para cada paso
 │   └── Expresion_diferencial/
 │   └── Enriquecimiento/
 │ 
@@ -39,6 +39,6 @@ A continuación se detalla la organización de los archivos:
 └── 📄 README.md               # Este archivo
 ```
 
-Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages: [https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/]
+Puedes ver todo el trabajo redactado y detallado en el siguiente enlace de GitHub Pages 👉🏼 https://virzzu.github.io/The-Simpsons_Analisis-RNAseq/
 
 Autores: Rita Pellissa Valera, Samuel Pintos González, Tamara Noya Mosquera, Teresa Carrión Mera, Vanesa de las Heras Hermosilla, Virginia García-Loygorri Arias y Yannis Avlonitis Egea.
