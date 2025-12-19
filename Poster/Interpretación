@@ -1,0 +1,12 @@
+Tras un análisis de expresión diferencial, se han obtenido seis genes significativamente diferenciados. 
+La sobreexpresión de un gen se denota con un Log Fold Change positivo (logFC > 0), mientras que la infraexpresión se denota con un Log Fold Change negativo (logFC > 0).
+Los genes sobreexpresados son FTO (2,31), SIM1 (1.6), MC4R (1.49) y UBR2 (0.88). Los genes infraexpresados son BDNF (-0.76), CADM2 (-0.76), UHMK1 (-0.99), LEP (-1.05), NTRK2 (-1.96).
+El gen FTO está fuertemente relacionado con la obesidad y desordenes metabólicos. FTO es una desmetilasa de m6A en RNA, por lo que su sobreexpresión puede alterar la regulación epitranscriptómica de mRNAs 
+relacionados con el apetito, la saciedad y la adipogénesis. (1)
+El gen SIM1 es clave en el desarrollo y la correcta función del núcleo paraventricular (PVN) del núcleo hipotálamico. Las alteraciones en este gen podrían alterar el PVN, generando anomalías en la regulación del apetito y el balance energético. (2)
+El gen MC4R (3)
+
+Referencias:
+1. Zhao, X., Yang, Y., Sun, BF. et al. FTO and Obesity: Mechanisms of Association. Curr Diab Rep 14, 486 (2014). https://doi.org/10.1007/s11892-014-0486-0
+2. Ramachandrappa, S., Raimondo, A., Cali, A. M., Keogh, J. M., Henning, E., Saeed, S., Thompson, A., Garg, S., Bochukova, E. G., Brage, S., Trowse, V., Wheeler, E., Sullivan, A. E., Dattani, M., Clayton, P. E., Datta, V., Bruning, J. B., Wareham, N. J., O'Rahilly, S., Peet, D. J., … Farooqi, I. S. (2013). Rare variants in single-minded 1 (SIM1) are associated with severe obesity. The Journal of clinical investigation, 123(7), 3042–3050. https://doi.org/10.1172/JCI68016
+3. Cheraghi, S., Mobaderi, T., Mottaghi, A., Movahedi Motlagh, F., Taghizadeh, S., & Eghbali, M. (2025). Genetic variants in the MC4R gene and risk of obesity/overweight: A systematic review and meta-analysis. Diabetes, obesity & metabolism, 27(7), 3901–3920. https://doi.org/10.1111/dom.16425
