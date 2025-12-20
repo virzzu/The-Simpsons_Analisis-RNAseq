@@ -59,6 +59,24 @@ Ante estos resultados, se decidió que el proceso de recorte no aportaba una mej
 Finalmente, utilizamos `MultiQC` para volver a observar todos los resultados del análisis calidad juntos. Con ello, reafirmamos que la calidad inicial era muy buena y preferimos no descartar lecturas mediante filtrado para no arriesgarnos a borrar datos reales e importantes para el análisis.
 
 
+
+### Interpretación detallada del análisis de calidad de las secuencias
+
+Puedes consultar el <a href="../RNAseq/Calidad_y_cuantificacion/multiqc_report.html" target="_blank">informe MultiQC completo aquí</a>
+
+El panel general del informe (*General Statistics*) confirma una alta homogeneidad entre todas las muestras analizadas. Todas las muestras (Bart, Lisa, Maggie, Marge, Patty y Selma) presentan un recuento de ~1325 secuencias por muestra. Esta elevada profundidad permite la detección de genes con baja tasa de transcripción y aumenta la potencia estadística necesaria para validar las diferencias observadas.
+
+Como se puede observar en la Figura 1, los valores de calidad media (*mean Q*) se mantienen en la "zona verde" (Phred > 30) desde el inicio hasta el final de las lecturas (~150 bp) en todas las muestras. Esto significa que la precisión en la identificación de cada nucleótido es superior al 99.9%, es decir, que la calidad de las secuencias es muy alta. 
+
+En el caso de este proyecto, donde las secuencias fueron creadas artificialmente de manera computacional, tiene sentido que la calidad, las lecturas y todos los parámetros tengan tan buenos valores. A la vez, se entiende que debido a esto no se observe la degradación típica de calidad hacia el final de la lectura que suele obligar a realizar un paso de *trimming*, lo que justifica el uso de las secuencias de las lecturas crudas para el alineamiento posterior.
+
+Respecto al porcentaje de GC, este se sitúa consistentemente entre el 45% y el 46%. Una distribución tan estrecha indica que no existen sesgos en la preparación de las librerías y que las muestras son comparables entre sí. También se observa un porcentaje de duplicación cercano al 0.5%, un valor excepcionalmente bajo.
+El informe detecta la presencia significativa de secuencias contaminantes provenientes de adaptadores de secuenciación. Los niveles de contenido de adaptadores son menores al 1% en todas las muestras, manteniendose dentro de los estándares de calidad de FastQC (<5%).
+
+Si este estudio fuera real, el uso de datos crudos cuando la calidad es óptima evitaría la pérdida innecesaria de información biológica que a veces ocurre durante el proceso de trimming excesivo. En general se acostumbra a filtrar para obtener mejor calidad de secuencia, pero la calidad inicial en este caso es muy buena y, por tanto, se ha decidido utilizar los datos crudos en vez de los filtrados para los análisis posteriores.
+
+![Figura 1. FastQC: Mean Quality Scores](img/meanQCscores.png)
+
 <details>
 <summary> 👈🏼 **Click aquí para ver el código completo del Pipeline del análisis en Bash**</summary>
 ```{bash AnalisisCalidad, eval=FALSE}
@@ -156,6 +174,17 @@ Una vez generado el índice, se procedió a la cuantificación masiva de las mue
 
 El resultado final de este proceso genera un directorio de resultados por cada muestra, conteniendo logs con información relevante como la tasa de mapeo (*mapping rate*) y, lo más importante, los archivos `quant.sf`. Estos archivos son los que contienen los conteos de lecturas brutos que son la entrada para el análisis de expresión diferencial posterior. Por último se generó un nuevo reporte de MultiQC, permitiendo visualizar las estadísticas de alineamiento y cuantificación.
 
+
+### Interpretación del análisis de cuantificación y alineamiento de Salmon
+
+Puedes consultar el <a href="../RNAseq/Calidad_y_cuantificacion/multiqc_salmon.html" target="_blank">informe MultiQC de Salmon completo aquí</a>
+
+El informe refleja una muy buena eficiencia de mapeo, lo que confirma que la decisión de utilizar los datos crudos fue acertada debido a la alta calidad de las bases.
+Todas las muestras presentan una tasa de alineamiento (*mapping rate*) extremadamente alta, situándose en el 100%; de los fragmentos iniciales, todos han sido asignados a transcritos específicos. En estudios de RNA-seq, una tasa superior al 80% se considera de alta calidad y alcanzar casi el 99% es un resultado excepcional. Esto indica que la totalidad de las lecturas por muestra coinciden con secuencias del transcriptoma de referencia.
+
+Además, esta cifra tan alta demuestra que la presencia de adaptadores (que vimos en el informe anterior) no impidió que Salmon identificara los genes correctamente. Esto pasa probablemente gracias a que su algoritmo de quasi-mapping ignora secuencias técnicas si la señal biológica es fuerte. 
+El Compatible Fragment Ratio (CFR) también ha recibido un valor de 100%, lo cual indica que el número de fragmentos que Salmon esperaba observar coincide exactamente con lo que observó. Es un indicador de consistencia perfecta. Finalmente, el M Bias (*strand mapping bias*) muestra si hay un sesgo de mapeo (si Salmon prefiere mapear al principio o al final de la lectura). Un valor de 1.0 significa que no hay sesgo y por tanto que la cobertura es uniforme en todo el gen.
+
 <details>
 <summary> 👈🏼 **Click aquí para ver el código completo del Pipeline del alineamiento y cuantificación en Bash**</summary>
 ```{bash AlineamientoCuantif, eval=FALSE}
@@ -235,7 +264,6 @@ multiqc . -n multiqc_salmon
 open multiqc_salmon.html
 
 ```
-
 
 ## Análisis de expresión diferencial con herramientas en R
 
