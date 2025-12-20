@@ -62,7 +62,7 @@ Finalmente, utilizamos `MultiQC` para volver a observar todos los resultados del
 
 ### Interpretación detallada del análisis de calidad de las secuencias
 
-Puedes consultar el <a href="../RNAseq/Calidad_y_cuantificacion/multiqc_report.html" target="_blank">informe MultiQC completo aquí</a>
+Puedes consultar el <a href="multiqc_report.html" target="_blank">informe MultiQC completo aquí</a>
 
 El panel general del informe (*General Statistics*) confirma una alta homogeneidad entre todas las muestras analizadas. Todas las muestras (Bart, Lisa, Maggie, Marge, Patty y Selma) presentan un recuento de ~1325 secuencias por muestra. Esta elevada profundidad permite la detección de genes con baja tasa de transcripción y aumenta la potencia estadística necesaria para validar las diferencias observadas.
 
@@ -177,7 +177,7 @@ El resultado final de este proceso genera un directorio de resultados por cada m
 
 ### Interpretación del análisis de cuantificación y alineamiento de Salmon
 
-Puedes consultar el <a href="../RNAseq/Calidad_y_cuantificacion/multiqc_salmon.html" target="_blank">informe MultiQC de Salmon completo aquí</a>
+Puedes consultar el <a href="multiqc_salmon.html" target="_blank">informe MultiQC de Salmon completo aquí</a>
 
 El informe refleja una muy buena eficiencia de mapeo, lo que confirma que la decisión de utilizar los datos crudos fue acertada debido a la alta calidad de las bases.
 Todas las muestras presentan una tasa de alineamiento (*mapping rate*) extremadamente alta, situándose en el 100%; de los fragmentos iniciales, todos han sido asignados a transcritos específicos. En estudios de RNA-seq, una tasa superior al 80% se considera de alta calidad y alcanzar casi el 99% es un resultado excepcional. Esto indica que la totalidad de las lecturas por muestra coinciden con secuencias del transcriptoma de referencia.
