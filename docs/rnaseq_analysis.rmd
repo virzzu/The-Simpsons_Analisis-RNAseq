@@ -13,7 +13,7 @@ output:
 ![](https://img.shields.io/badge/MADE%20WITH-R-blue?style=for-the-badge&logo=R)
 
 
-Este proyecto presenta un flujo de trabajo bioinformático completo para el análisis de expresión diferencial de genes (RNA-seq). El objetivo del estudio es identificar firmas transcriptómicas y marcadores moleculares alterados al comparar sujetos con Normopeso frente a sujetos con Sobrepeso Tipo 2.
+Este proyecto presenta un flujo de trabajo bioinformático completo para el análisis de expresión diferencial de genes (RNA-Seq). El objetivo del estudio es identificar firmas transcriptómicas y marcadores moleculares alterados al comparar sujetos con Normopeso frente a sujetos con Sobrepeso Tipo 2.
 
 Se ha implementado un pipeline en lenguajes bash y R que abarca desde el preprocesamiento de las librerías y generación de la matriz de conteos, la normalización de los conteos, la visualización avanzada de resultados y su identificación y significado biológico. Mediante el uso de modelos estadísticos (EdgeR), se detectaron genes clave asociados a la regulación metabólica (como FTO y LEP, entre otros), permitiendo caracterizar el perfil molecular distintivo del sobrepeso.
 
@@ -36,7 +36,7 @@ El análisis se llevó a cabo utilizando R y paquetes especializados de Biocondu
 - Clustering: `pheatmap` para mapas de calor con agrupamiento jerárquico (distancia de correlación y método Ward.D2).
 
 
-# Análisis Rna-Seq
+# Análisis RNA-Seq
 
 ## Análisis de calidad de las secuencias
 
@@ -71,7 +71,7 @@ Como se puede observar en la Figura 1, los valores de calidad media (*mean Q*) s
 En el caso de este proyecto, donde las secuencias fueron creadas artificialmente de manera computacional, tiene sentido que la calidad, las lecturas y todos los parámetros tengan tan buenos valores. A la vez, se entiende que debido a esto no se observe la degradación típica de calidad hacia el final de la lectura que suele obligar a realizar un paso de *trimming*, lo que justifica el uso de las secuencias de las lecturas crudas para el alineamiento posterior.
 
 Respecto al porcentaje de GC, este se sitúa consistentemente entre el 45% y el 46%. Una distribución tan estrecha indica que no existen sesgos en la preparación de las librerías y que las muestras son comparables entre sí. También se observa un porcentaje de duplicación cercano al 0.5%, un valor excepcionalmente bajo.
-El informe detecta la presencia significativa de secuencias contaminantes provenientes de adaptadores de secuenciación. Los niveles de contenido de adaptadores son menores al 1% en todas las muestras, manteniendose dentro de los estándares de calidad de FastQC (<5%).
+El informe detecta una presencia del 13% de secuencias contaminantes provenientes de adaptadores de secuenciación. Tras el filtrado con Fastp, los niveles de contenido de adaptadores son menores al 1% en todas las muestras, manteniendose dentro de los estándares de calidad del FastQC (<5%).
 
 Si este estudio fuera real, el uso de datos crudos cuando la calidad es óptima evitaría la pérdida innecesaria de información biológica que a veces ocurre durante el proceso de trimming excesivo. En general se acostumbra a filtrar para obtener mejor calidad de secuencia, pero la calidad inicial en este caso es muy buena y, por tanto, se ha decidido utilizar los datos crudos en vez de los filtrados para los análisis posteriores.
 
@@ -268,7 +268,7 @@ open multiqc_salmon.html
 ## Análisis de expresión diferencial con herramientas en R
 
 Para determinar los cambios en el perfil transcriptómico asociados al sobrepeso, se llevó a cabo un análisis de expresión diferencial comparando el grupo de Normopeso frente al grupo de Sobrepeso/Obeso Tipo 2. 
-Inicialmente, se exploraron tres de las herramientas más consolidadas en bioinformática: `DESeq2`, `limma-voom` y `edgeR`. Tras una evaluación de los estadísticos obtenidos con cada uno de las herramientas, concluímos en presentar el pipeline realizado con `edgeR` como análisis principal, pues observamos que los resultados se situaban en un balance intermedio entre los de `DESeq2` y `limma-voom`. Pueden encontrarse los pipelines de todas las herramientas en el repositorio dentro de `/RNAseq/Expresion_diferencial` en sus respectivas carpetas.
+Inicialmente, se exploraron tres de las herramientas más consolidadas en bioinformática: `DESeq2`, `limma-voom` y `edgeR`. Tras una evaluación de los estadísticos obtenidos con cada una de las herramientas, concluímos en presentar el pipeline realizado con `edgeR` como análisis principal, pues observamos que los resultados se situaban en un balance intermedio entre los de `DESeq2` y `limma-voom`. Pueden encontrarse los pipelines de todas las herramientas en el repositorio dentro de `/RNAseq/Expresion_diferencial` en sus respectivos directorios.
 
 
 ### Análisis de expresión diferencial génica con edgeR
@@ -633,23 +633,48 @@ ggplot(datos_largos, aes(x = Grupo, y = LogCPM, fill = Grupo)) +
 
 ![Figura 1. MA plot](img/MAplot.png)
 
-  -> interpretación maplot
+La figura 1 muestra un MA plot. El gráfico MA representa la relación entre el nivel promedio de expresión génica (average log CPM) y el cambio de expresión (log-fold change) entre los grupos analizados. Este enfoque permite evaluar si los cambios observados dependen del nivel basal de expresión de los genes.
+
+La mayoría de los genes estudiados se agrupan alrededor del valor 0 en el eje vertical, lo que indica que no presentan cambios relevantes de expresión entre los grupos experimentales. Sin embargo, algunos genes se separan claramente de este patrón y muestran cambios consistentes y significativos.
+
+Entre los genes sobreexpresados en el grupo con sobrepeso/obesidad tipo 2 destacan *FTO*, *SIM1*, *MC4R* y *UBR2*, los cuales presentan valores positivos de log-fold change estadísticamente significativos, indicando un aumento de su expresión respecto al grupo normopeso. Estos genes mantienen niveles de expresión promedio relativamente altos, lo que refuerza la robustez de los cambios observados.
+
+En contraste, los genes *NTRK2*, *LEP*, *BDNF*, *CADM2* y *UHMK1* aparecen como infraexpresados en el grupo con sobrepeso/obesidad, con valores negativos de log-fold change. La disminución de su expresión es consistente a lo largo de diferentes niveles de expresión promedio, lo que sugiere que estos cambios no son producto de variaciones técnicas, sino de diferencias biológicas reales entre los grupos. 
+
  
 ![Figura 2. Volcano Plot](img/VolcanoPlot.png)
 
-  -> interpretación volcano plot
+La figura 2 muestra un Volcano Plot, que representa la relación entre el cambio en la expresión génica (log₂ fold change (LFC)) y la significancia estadística (–log₁₀ FDR) para el conjunto de genes analizados. Este tipo de gráfico permite identificar de forma visual aquellos genes que presentan cambios de expresión relevantes y estadísticamente significativos entre los grupos comparados.
+
+En el eje horizontal se observa el grado de sobreexpresión o infraexpresión de los genes en el grupo con sobrepeso/obesidad tipo 2 en comparación con el grupo normopeso, mientras que el eje vertical representa el nivel de significancia estadística. Los genes resaltados en color corresponden a aquellos que superan los umbrales establecidos tanto para cambio de expresión como para significancia: $|log₂ fold change| > 1$ y $FDR < 0.05$ o su equivalente $p valor adj < 0.05$. Este umbral representa un cambio de expresión al menos el doble en el grupo de obesidad tipo 2 frente al normopeso, con su significancia estadística.
+
+Los genes sobreexpresados en el grupo con sobrepeso/obesidad tipo 2, representados en rojo, incluyen *FTO*, *SIM1* y *MC4R*, los cuales muestran valores positivos de $log₂ fold change > 1$ y alta significancia estadística. Aparece también *UBR2* que muestra alta significancia estadística, pero su valor de LFC se encuentra justo por debajo del límite del umbral de cambio expresión génica ( $LFC = 0.88$ ). 
+
+Por otro lado, los genes infraexpresados que cumplen el umbral LFC en el grupo con sobrepeso/obesidad son mostrados en azul, incluyen *NTRK2* y *LEP*. En este caso también observamos tres genes que tienen significación estadística, pero se encuentran por debajo del límite establecido por el umbral LFC de la expresión: *UHMK1* se encuentra en el límite ($LFC = -0.99$) y BDNF y CADM2 estan muy cercanos ($LFC = -0.76$).
+
+En conjunto, el gráfico Volcano evidencia un subconjunto de genes con cambios de expresión significativos entre normopeso y sobrepeso/obesidad tipo 2, destacando tanto genes activados como reprimidos en esta condición.
+
   
 ![Figura 3. HeatMap](img/HeatmapPlot.png)
 
-  -> interpretación del heatmap
-  
+El heatmap representado en la figura 3, revela en el dendograma superior una clara separación por clusterización de las muestras en los dos grupos principales experimentales: normopeso y obesidad tipo 2. Este patrón sugiere que el estado de normopeso u obesidad está asociado a diferencias consistentes en la expresión de los genes analizados.
+
+En general, se observan patrones opuestos de expresión entre ambos grupos. Estas diferencias indican la presencia de cambios coordinados intergénicos en la regulación asociados al exceso de peso.
+
+Entre los genes con alta expresión en el grupo con sobrepeso/obesidad tipo 2 destacan *FTO* y *PPARG*, genes que controlan el balance energético y el almacenamiento de energía, promoviendo la adipogénesis; y *MC4R* y *SIM1* que su sobreexpresión podría introducir la hipótesis de un mecanismo compensatorio activado en fenotipos con exceso de peso. Por el contrario, genes que muestran una infraexpresión frente al grupo normopeso son *LEP*, *LEPR*, *BDNF*, *NTRK2* y *CADM2*. Estos, están involucrados en la señalización neurotrófica que regula la saciedad y sensacion de hambre a nivel central, lo que podría mimetizar un estado de inanición celular cuando realmente no está ocurriendo, provocando que los individuos pasen hambre, y consuman una mayor cantidad de alimentos energéticamente innecesarios.
+
+Las variables demográficas incluidas, como la edad y el sexo, no parecen ser los principales determinantes del patrón de agrupamiento observado, ya que la separación entre muestras está dominada por la condición de normopeso o sobrepeso/obesidad tipo 2, pero podrían influir y se tienen en cuenta como posibles factores de confusión.
+
+En conjunto, estos resultados apoyan la idea de que la obesidad tipo 2 se asocia con cambios específicos y coordinados en la expresión génica.
+
+
 ## Análisis de enriquecimiento funcional de los genes diferencialmente expresados
 
 El enriquecimiento funcional es la técnica que permite dar un contexto biológico a la lista de genes diferencialmente expresados que hemos obtenido, agrupándolos según las funciones o rutas en las que participan. Gracias a este análisis, podemos ver si hay procesos biológicos o vías de señalización que están estadísticamente sobrerrepresentadas, lo que nos ayuda a entender qué está ocurriendo realmente a nivel molecular en las muestras.
 
-Para ello, se parte de los resultados obtenidos con EdgeR para los genes diferencialmente expresados con un $FDR<0.05$ y con un cambio de expresión relevante ($FC}≥1$). Se utilizó la librería `gprofiler2` a través de internet, cruzando los genes con bases de datos clave: 
+Para ello, se parte de los resultados obtenidos con EdgeR para los genes diferencialmente expresados con un $FDR<0.05$ y con un cambio de expresión relevante $LFC≥1$. Se utilizó la librería `gprofiler2` a través de internet, cruzando los genes con bases de datos clave: 
 
-* GO:BP -> Gene Ontology (Biological Process) 
+* GO(BP) -> Gene Ontology (Biological Process) 
 
 * KEGG -> Kyoto Encyclopedia of Genes and Genomes
 
@@ -673,6 +698,55 @@ Una herramienta útil en la visualización de esta tabla interactiva es el orden
 
 Para ver el detalle de todos los términos enriquecidos, puedes consultar la 
 <a href="tablaEnriquecimiento.html" target="_blank">tabla interactiva completa aquí</a>.
+
+
+### Funciones biológicas de los DEGs
+
+Genes sobreexpresados:
+
+El gen FTO está fuertemente relacionado con la obesidad y desordenes metabólicos. FTO es una desmetilasa de m6A en RNA, por lo que su sobreexpresión puede alterar la regulación epitranscriptómica de mRNAs 
+relacionados con el apetito, la saciedad y la adipogénesis. (1)
+
+El gen SIM1 es clave en el desarrollo y la correcta función del núcleo paraventricular (PVN) del núcleo hipotálamico. Las alteraciones en este gen podrían alterar el PVN, generando anomalías en la regulación del apetito y el balance energético. (2)
+
+El gen MC4R (3) se ha identificado como causante de obesidad y sobrepeso. Este gen codifica para un receptos de melanocortina en neuronas secundarias, que integran señales de neuronas POMC y neuronas que segregan AgRP. En situaciones de ayuno, los bajos niveles de leptina activan neuronas que liberan AgRP; este se une a receptores MC4R en neuronas secundarias, que interpretan esta señal aumentando el apetito.  Una alteración en esta vía hipotalámica puede desequilibrar el apetito y la ingesta.
+
+El gen UBR2 codifica para una E3 ubiquitina ligasa. UBR2 se ha asociado a casos de obesidad y alteraciones metabólicas en estudios poblacionales de ancestralidad. (5)
+
+Genes infraexpresados:
+
+El gen BDNF es un factor neurotrófico esencial en la regulación de la formación y plasticidad de redes neuronales. Mutaciones en este gen o en su receptor TrkB resultan en obesidad, apetito insaciable y menor gasto energético. Su haploinsuficiencia se ha ligado a hiperfagia, trastornos metabólicos y otros deordenes neurológicos como el tumor de Wilm's, aniridia... (6)
+
+El gen NTRK2 cofica para el receptor TkrB, implicado en la regulación de la homeostasis energética. El impedimento de señalización, en este caso debido a una infraexpresión génica, puede estar relacionada con una pérdida o disminución de señalización celular, impidiendo la respuesta de las neuronas ante la secreción de BDNF. Esta alteración en la señalización hipotalámica puede contribuir a la hiperfagia y obesidad. (7)
+
+El gen CADM2 codifica para una proteina de adhesión en la membrana celular de las neuronas, que se encargan de mediar la sinapsis en el hipotálamo. Alteraciones en este gen se han relacionado con obesidad y desordenes metabólicos. (8)
+
+El gen UHMK1 codifica para "U2AF homology motif kinase 1" o "KIS" (kinase interacting with stathmin), una serina/treonina kinasa. Este gen está ligado a la tasa metabólica basal (BMR). (9)
+
+El gen LEP codifica la hormona leptina. Esta hormona es clave en la regulación de la ingesta, masa corporal, crecimiento fetal, respuestas proinflamatorias, angiogénesis y lipogénesis. Esta hormona se genera en los adipocitos y se une a sus receptores en las hormonas del hipotálamo. La infraexpresión de LEP puede tener efectos análogos a los de la resistencia a la leptina: reducción de la saciedad, hiperfagia y ganancia de masa corporal. (10)
+
+<details>
+<summary>Referencias  del análisis de la función biológica de genes diferencialmente expresados</summary>
+1. Zhao, X., Yang, Y., Sun, BF. et al. FTO and Obesity: Mechanisms of Association. Curr Diab Rep 14, 486 (2014). https://doi.org/10.1007/s11892-014-0486-0
+2. Ramachandrappa, S., Raimondo, A., Cali, A. M., Keogh, J. M., Henning, E., Saeed, S., Thompson, A., Garg, S., Bochukova, E. G., Brage, S., Trowse, V., Wheeler, E., Sullivan, A. E., Dattani, M., Clayton, P. E., Datta, V., Bruning, J. B., Wareham, N. J., O'Rahilly, S., Peet, D. J., … Farooqi, I. S. (2013). Rare variants in single-minded 1 (SIM1) are associated with severe obesity. The Journal of clinical investigation, 123(7), 3042–3050. https://doi.org/10.1172/JCI68016
+3. Cheraghi, S., Mobaderi, T., Mottaghi, A., Movahedi Motlagh, F., Taghizadeh, S., & Eghbali, M. (2025). Genetic variants in the MC4R gene and risk of obesity/overweight: A systematic review and meta-analysis. Diabetes, obesity & metabolism, 27(7), 3901–3920. https://doi.org/10.1111/dom.16425
+4. UBR2 protein expression summary - The Human Protein Atlas. (s. f.). https://www.proteinatlas.org/ENSG00000024048-UBR2
+5. Banerjee, D., Girirajan, S. Discovery of obesity genes through cross-ancestry analysis. Nat Commun 16, 9319 (2025). https://doi.org/10.1038/s41467-025-64933-7
+6. Pandit, M., Behl, T., Sachdeva, M., & Arora, S. (2020). Role of brain derived neurotropic factor in obesity. Obesity Medicine, 17, 100189. https://doi.org/10.1016/j.obmed.2020.100189
+7. Gray, J., Yeo, G., Hung, C., Keogh, J., Clayton, P., Banerjee, K., McAulay, A., O'Rahilly, S., & Farooqi, I. S. (2007). Functional characterization of human NTRK2 mutations identified in patients with severe early-onset obesity. International journal of obesity (2005), 31(2), 359–364. https://doi.org/10.1038/sj.ijo.0803390
+8. Yan, X., Wang, Z., Schmidt, V., Gauert, A., Willnow, T. E., Heinig, M., & Poy, M. N. (2017). Cadm2 regulates body weight and energy homeostasis in mice. Molecular Metabolism, 8, 180-188. https://doi.org/10.1016/j.molmet.2017.11.010
+9. Hellwege, J. N., Edwards, D. R. V., Acra, S., Chen, K., Buchowski, M. S., & Edwards, T. L. (2017). Association of gene coding variation and resting metabolic rate in a multi-ethnic sample of children and adults. BMC Obesity, 4(1), 12. https://doi.org/10.1186/s40608-017-0145-5
+10. Obradovic M, Sudar-Milovanovic E, Soskic S, Essack M, Arya S, Stewart AJ, Gojobori T, Isenovic ER. Leptin and Obesity: Role and Clinical Implication. Front Endocrinol (Lausanne). 2021 May 18;12:585887. doi: 10.3389/fendo.2021.585887. PMID: 34084149; PMCID: PMC8167040.
+
+
+
+## Discusión y conclusiones
+
+Los resultados obtenidos revelan un mecanismo molecular que parece estar impulsado primariamente por un fallo crítico en la señalización neurotrópica de saciedad y sensación de hambre. La infraexpresión significativa de *LEP* sugiere que, a pesar de la acumulación de tejido adiposo promovida por la sobreexpresión de *FTO*, el cerebro no recibe la señal de altas reservas energética, mimetizando un estado de inanición constante que conduce a la hiperfagia. Este déficit de señalización se ve agravado por la infraexpresión de *BDNF* y su receptor *NTRK2*, que son parte de una vía esencial para la homeostasis energética. 
+
+Además, el fenotipo de obesidad se ve afectado por una potente desregulación epitranscriptómica y proteica impulsada por la sobreexpresión de *FTO*, *UBR2*, *MC4R* y *SIM1*. La elevada expresión de *FTO*, es consistente con la literatura que lo asocia fuertemente a la adipogénesis y a la alteración de mRNA claves en el control del apetito, actuando como un impulsor activo para la acumulación de grasa. La sobreexpresión de *UBR2* sugiere que alteraciones en la degradación proteica contribuyen al desorden metabólico, creando un círculo fisiológico difícil de romper. La sobreexpresión de *MC4R* y *SIM1* podría interpretarse de dos maneras: como un intento compensatorio fallido para restablecer el equilibrio energético o como una sobresensibilización del sistema promoviendo la hiperfagia, desencadenada por la infraexpresión de *LEP*.
+
+En conclusión, el análisis de expresión diferencial revela un fenotipo de obesidad caracterizado por una insensibilidad hipotalámica a las señales de saciedad y una predisposición molecular al almacenamiento de energía.
 
 <details>
 <summary> 👈🏼 **Click aquí para ver el código completo del Pipeline del análisis de enriquecimiento funcional en R**</summary>
@@ -747,5 +821,3 @@ reactable(
   )
 )
 ```
-
-

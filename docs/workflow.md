@@ -6,8 +6,5 @@ output:
     highlight: tango
     css: style.css
 ---
-# RNA-Seq data analysis workflow
-
-Este es el flujo de trabajo del proyecto:
 
 ![](img/workflow.png)

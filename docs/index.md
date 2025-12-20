@@ -29,4 +29,3 @@ Se ha implementado un pipeline en lenguajes bash y R que abarca desde el preproc
  * Interpretar perfiles de expresión en función del fenotipo o condición.
  
  * Representar los resultados en un póster científico.
-
